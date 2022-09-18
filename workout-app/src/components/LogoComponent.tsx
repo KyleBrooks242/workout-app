@@ -6,7 +6,7 @@ export const LogoComponent = () => {
             xmlns="http://www.w3.org/2000/svg"
             // width="1066.667"
             // height="246.425"
-            width="212"
+            width="150"
             height="48"
             version="1.1"
             viewBox="0 0 1000 231.024"
