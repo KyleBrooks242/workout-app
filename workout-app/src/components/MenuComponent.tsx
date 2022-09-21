@@ -1,12 +1,34 @@
 import React from 'react';
-import {LogoComponent} from "./LogoComponent";
-import {Box} from "@mui/material";
-export const MenuComponent = () => {
+import logo from'../logo.png';
+import {Container, Button} from "@mui/material";
+
+interface Props {
+    isSignOutVisible: boolean
+    handleSignOut: any
+}
+
+export const MenuComponent = (props: Props) => {
     return (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1.5rem'}}>
-            <p>Swole</p>
-            <LogoComponent/>
-            <p>Naysh</p>
-        </Box>
-)
+        <Container sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1.5rem'}}>
+            <img
+                src={logo}
+                alt={'Swole Nation'}
+                width={'400'}
+                height={'75'}
+                className={'main-logo'}
+            />
+
+            {
+                props.isSignOutVisible
+                    ?
+                    <Button
+                        className={'signout-button'}
+                        variant="contained"
+                        onClick={() => props.handleSignOut()}
+                    >Sign Out</Button>
+                    :
+                    null
+            }
+        </Container>
+    )
 }

@@ -1,6 +1,15 @@
 import React, {useState} from 'react';
 import Input from '@mui/material/Input';
-import {Box, Button, FormControl, IconButton, InputAdornment, InputLabel} from "@mui/material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    IconButton,
+    InputAdornment,
+    InputLabel
+} from "@mui/material";
 import {AccountCircle, VisibilityOff, Visibility} from "@mui/icons-material";
 import axios from "axios";
 
@@ -8,6 +17,7 @@ interface State {
     username: string
     password: string
     showPassword: boolean
+    createAccount: boolean
 }
 
 interface Props {
@@ -19,13 +29,21 @@ export const LoginComponent = (props: Props) => {
     const [values, setValues] = useState<State>({
         username: '',
         password: '',
-        showPassword: false
-    })
+        showPassword: false,
+        createAccount: false
+    });
 
     const handleClickShowPassword = () => {
         setValues({
             ...values,
             showPassword: !values.showPassword,
+        });
+    };
+
+    const handleClickCreateAccount = () => {
+        setValues({
+            ...values,
+            createAccount: !values.createAccount,
         });
     };
 
@@ -38,24 +56,45 @@ export const LoginComponent = (props: Props) => {
             setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleLoginClicked = async () => {
-        //TODO hit the backend with username and password.. set token based on response!
+    //TODO we need to handle the situation where the login is invalid here
+    const handleLoginOrCreateAccountClicked = async () => {
+    const data = JSON.stringify({
+        username: values.username,
+        password: values.password
+    })
 
-        const response = await axios.post(
-            '/user',
-            {
-                data: JSON.stringify(values)
+        if (values.createAccount) {
+            const response = await axios.post(
+                '/user',
+                {
+                    data: data
+                }
+            )
+
+            if (response.status === 200) {
+                console.log('SUCCESSFULLY CREATED USER!');
             }
-        )
-        console.log(response);
-        if (response.status === 200) {
-            props.setToken(response.data.token)
         }
+
+        else {
+            const response = await axios.post(
+                '/login',
+                {
+                    data: data
+                }
+            )
+            if (response.status === 200) {
+                console.log('SUCCESSFULLY AUTHENTICATED');
+                props.setToken(response.data.userToken)
+            }
+        }
+
+
     }
 
 
-    return(
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem'}}>
+    return (
+        <Box className={'login-box'}>
             <div className={'login-wrapper'}>
                 <h2>Let's 👀 Some Id</h2>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
@@ -94,11 +133,14 @@ export const LoginComponent = (props: Props) => {
                     />
                 </FormControl>
 
+                <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccount} />
                 <Button
                     sx={{marginTop: '2rem'}}
-                    variant="contained"
-                    onClick={() => handleLoginClicked()}
-                >Login</Button>
+                    variant='contained'
+                    onClick={() => handleLoginOrCreateAccountClicked()}
+                >{values.createAccount ? 'Create Account' : 'Login'}
+                </Button>
+
             </div>
         </Box>
     )
