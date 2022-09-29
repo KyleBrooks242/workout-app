@@ -17,7 +17,9 @@ interface State {
     username: string
     password: string
     showPassword: boolean
-    createAccount: boolean
+    createAccount: boolean,
+    hasError: boolean,
+    errorMessage: string
 }
 
 interface Props {
@@ -30,7 +32,9 @@ export const LoginComponent = (props: Props) => {
         username: '',
         password: '',
         showPassword: false,
-        createAccount: false
+        createAccount: false,
+        hasError: false,
+        errorMessage: ''
     });
 
     const handleClickShowPassword = () => {
@@ -58,38 +62,48 @@ export const LoginComponent = (props: Props) => {
 
     //TODO we need to handle the situation where the login is invalid here
     const handleLoginOrCreateAccountClicked = async () => {
-    const data = JSON.stringify({
-        username: values.username,
-        password: values.password
-    })
+        const data = {
+            username: values.username,
+            password: values.password
+        }
 
         if (values.createAccount) {
-            const response = await axios.post(
+            console.log("Creating account...")
+            await axios.post(
                 '/user',
                 {
                     data: data
                 }
             )
-
-            if (response.status === 200) {
-                console.log('SUCCESSFULLY CREATED USER!');
-            }
+            .then(data => {
+                console.log('DATA');
+                console.log(data);
+            })
+            .catch(error => {
+                //TODO parse error message and, if user already exists,
+                console.error('Error creating user');
+                console.error(error)
+            });
         }
-
         else {
-            const response = await axios.post(
+            console.log("logging in...");
+            await axios.post(
                 '/login',
                 {
                     data: data
                 }
             )
-            if (response.status === 200) {
-                console.log('SUCCESSFULLY AUTHENTICATED');
-                props.setToken(response.data.userToken)
-            }
+            .then((data: any) => {
+                console.log('DATA!');
+                console.log(data);
+                props.setToken(data.userToken);
+
+            })
+            .catch(error => {
+                console.error('SOMETHING WENT WRONG');
+                console.error(error);
+            });
         }
-
-
     }
 
 
@@ -102,6 +116,7 @@ export const LoginComponent = (props: Props) => {
                         Username
                     </InputLabel>
                     <Input
+                        error={false}
                         id="input-with-icon-adornment"
                         startAdornment={
                             <InputAdornment position="start">
