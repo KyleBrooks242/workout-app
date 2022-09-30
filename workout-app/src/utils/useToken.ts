@@ -3,16 +3,16 @@ import { useState } from 'react';
 export const useToken = () => {
     const getToken = () => {
         const tokenString: any = localStorage.getItem('token');
-        const userToken = JSON.parse(tokenString);
+        const userToken = tokenString;
 
-        return userToken?.token
+        return userToken;
     };
 
     const [token, setToken] = useState(getToken());
 
     const saveToken = (userToken: any) => {
-        localStorage.setItem('token', JSON.stringify(userToken));
-        setToken(userToken.token);
+        localStorage.setItem('token', userToken);
+        setToken(userToken);
     };
 
     const deleteToken = () => {

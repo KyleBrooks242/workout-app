@@ -78,6 +78,8 @@ export const LoginComponent = (props: Props) => {
             .then(data => {
                 console.log('DATA');
                 console.log(data);
+                props.setToken(data.data.token);
+
             })
             .catch(error => {
                 //TODO parse error message and, if user already exists,
@@ -96,7 +98,7 @@ export const LoginComponent = (props: Props) => {
             .then((data: any) => {
                 console.log('DATA!');
                 console.log(data);
-                props.setToken(data.userToken);
+                props.setToken(data.data.token);
 
             })
             .catch(error => {
