@@ -32,8 +32,6 @@ app.post('/login', async (req, res, next) => {
 
         const user = await getUser(username);
 
-        console.log(user.password);
-
         bcrypt.compare(password, user.password, (err, result) => {
            if (err || !result) {
                console.log('PASSWORD MISMATCH!')
@@ -69,10 +67,12 @@ app.post('/user',async (req, res, next) => {
     try {
         const rawData = req.body.data;
 
-        const username = rawData.username;
-        const password = rawData.password;
+        const username  = rawData.username;
+        const password  = rawData.password;
+        const email     = rawData.email;
+        const firstName = rawData.firstName;
+        const lastName  = rawData.lastName;
 
-        //TODO need to query the database for a user with the provided username to ensure
         const exists = await userExists(username);
         if (exists) {
             console.warn(`User ${username} already exists!`);
@@ -88,7 +88,7 @@ app.post('/user',async (req, res, next) => {
             }
             else {
                 console.log(`Hashed pw: ${hash}`);
-                const user = await createUser(username, hash);
+                const user = await createUser(username, email, firstName, lastName, hash);
 
                 user.token = jwt.sign(
                     { userId: username },
