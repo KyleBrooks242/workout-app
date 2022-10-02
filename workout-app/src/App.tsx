@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './styling/App.scss';
 import { LoginComponent } from "./components/LoginComponent";
 import { MenuComponent } from "./components/MenuComponent";

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Input from '@mui/material/Input';
 import {
-    Box,
     Button,
+    Box,
     Checkbox,
     FormControl,
     FormControlLabel,
@@ -10,16 +10,34 @@ import {
     InputAdornment,
     InputLabel
 } from "@mui/material";
-import {AccountCircle, VisibilityOff, Visibility} from "@mui/icons-material";
+import {
+    AccountCircle,
+    VisibilityOff,
+    Visibility,
+    EmailRounded
+} from "@mui/icons-material";
 import axios from "axios";
+import {clearValidationErrors, validateInput, ValidDataResponse} from "../utils/helpers";
+import {AlertComponent} from "./AlertComponent";
 
 interface State {
     username: string
     password: string
+    email: string
+    firstName: string
+    lastName: string
     showPassword: boolean
-    createAccount: boolean,
-    hasError: boolean,
+    createAccount: boolean
     errorMessage: string
+}
+
+interface ErrorState {
+    username: boolean
+    password: boolean
+    email: boolean
+    firstName: boolean
+    lastName: boolean
+    hasError: boolean
 }
 
 interface Props {
@@ -31,11 +49,24 @@ export const LoginComponent = (props: Props) => {
     const [values, setValues] = useState<State>({
         username: '',
         password: '',
+        email: '',
+        firstName: '',
+        lastName: '',
         showPassword: false,
         createAccount: false,
-        hasError: false,
         errorMessage: ''
     });
+
+    const [errors, setErrors] = useState<ErrorState>({
+        username: false,
+        password: false,
+        firstName: false,
+        lastName: false,
+        email: false,
+        hasError: false
+    })
+
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleClickShowPassword = () => {
         setValues({
@@ -44,7 +75,7 @@ export const LoginComponent = (props: Props) => {
         });
     };
 
-    const handleClickCreateAccount = () => {
+    const handleClickCreateAccountCheckbox = () => {
         setValues({
             ...values,
             createAccount: !values.createAccount,
@@ -60,11 +91,23 @@ export const LoginComponent = (props: Props) => {
             setValues({ ...values, [prop]: event.target.value });
     };
 
-    //TODO we need to handle the situation where the login is invalid here
     const handleLoginOrCreateAccountClicked = async () => {
+
+        setErrors(clearValidationErrors());
+
         const data = {
             username: values.username,
-            password: values.password
+            password: values.password,
+            email: values.email,
+            firstName: values.firstName,
+            lastName: values.lastName
+        }
+
+        const validData: ValidDataResponse = validateInput(data, values.createAccount);
+
+        if (validData.hasErrors) {
+            setErrors({ ...validData.errors, hasError: true })
+            return;
         }
 
         if (values.createAccount) {
@@ -82,6 +125,7 @@ export const LoginComponent = (props: Props) => {
 
             })
             .catch(error => {
+                setShowAlert(true);
                 //TODO parse error message and, if user already exists,
                 console.error('Error creating user');
                 console.error(error)
@@ -108,18 +152,31 @@ export const LoginComponent = (props: Props) => {
         }
     }
 
-
     return (
-        <Box className={'login-box'}>
+        <Box >
+            {
+                showAlert &&
+                <AlertComponent
+                    title={'Error'}
+                    message={'User already exists!'}
+                    severity={'error'}
+                    onClose={() => setShowAlert(false)}
+                />
+
+            }
             <div className={'login-wrapper'}>
-                <h2>Let's 👀 Some Id</h2>
+                {/*<h2>Let's See Some Id</h2>*/}
+
+
+                <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
+
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                    <InputLabel htmlFor="input-with-icon-adornment">
+                    <InputLabel htmlFor="username">
                         Username
                     </InputLabel>
                     <Input
-                        error={false}
-                        id="input-with-icon-adornment"
+                        error={errors.username}
+                        id="username"
                         startAdornment={
                             <InputAdornment position="start">
                                 <AccountCircle />
@@ -129,10 +186,56 @@ export const LoginComponent = (props: Props) => {
                     />
                 </FormControl>
 
+                {
+                    values.createAccount &&
+
+                    <div className={'login-wrapper'}>
+
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                            <InputLabel htmlFor="firstName">
+                                First Name
+                            </InputLabel>
+                            <Input
+                                error={errors.firstName}
+                                id="firstName"
+                                onChange={handleChange('firstName')}
+                            />
+                        </FormControl>
+
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                            <InputLabel htmlFor="lastName">
+                                Last Name
+                            </InputLabel>
+                            <Input
+                                error={errors.lastName}
+                                id="lastName"
+                                onChange={handleChange('lastName')}
+                            />
+                        </FormControl>
+
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                            <InputLabel htmlFor="email">
+                                Email
+                            </InputLabel>
+                            <Input
+                                error={errors.email}
+                                id="email"
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <EmailRounded />
+                                    </InputAdornment>
+                                }
+                                onChange={handleChange('email')}
+                            />
+                        </FormControl>
+                    </div>
+                }
+
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                    <InputLabel htmlFor="password">Password</InputLabel>
                     <Input
-                        id="standard-adornment-password"
+                        error={errors.password}
+                        id="password"
                         type={values.showPassword ? 'text' : 'password'}
                         value={values.password}
                         onChange={handleChange('password')}
@@ -150,12 +253,11 @@ export const LoginComponent = (props: Props) => {
                     />
                 </FormControl>
 
-                <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccount} />
                 <Button
                     sx={{marginTop: '2rem'}}
                     variant='contained'
                     onClick={() => handleLoginOrCreateAccountClicked()}
-                >{values.createAccount ? 'Create Account' : 'Login'}
+                >{values.createAccount ? 'Create' : 'Login'}
                 </Button>
 
             </div>

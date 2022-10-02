@@ -20,13 +20,19 @@ const userExists = async (user) => {
 /**
  *
  * @param userName
+ * @param email
+ * @param firstName
+ * @param lastName
  * @param password
  * @returns {Promise<nano.DocumentInsertResponse>}
  */
-const createUser = async (userName, password) => {
-    console.log('Creating user...')
+const createUser = async (userName, email, firstName, lastName, password) => {
+    console.log('Creating user...');
     const response = await db.insert({
         _id: userName,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
         password: password,
         docType: 'USER'
     });
