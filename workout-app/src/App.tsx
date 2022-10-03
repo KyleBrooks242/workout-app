@@ -4,9 +4,11 @@ import { LoginComponent } from "./components/LoginComponent";
 import { MenuComponent } from "./components/MenuComponent";
 
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import { DashboardComponent } from './components/DashboardComponent';
+import { DashboardPage } from './pages/DashboardPage';
 import { PreferencesComponent } from './components/PreferencesComponent';
 import { useToken } from "./utils/useToken";
+import {NewWorkoutPage} from "./pages/NewWorkoutPage";
+import {WorkoutHistoryPage} from "./pages/WorkoutHistoryPage";
 
 function App() {
 
@@ -23,7 +25,6 @@ function App() {
                 <LoginComponent setToken={setToken}/>
             </div>
         )
-
     }
 
     else {
@@ -40,8 +41,10 @@ function App() {
                         <Route path="/" element={ token
                             ? <Navigate replace to="/dashboard" />
                             : <LoginComponent setToken={setToken}/> } />
-                        <Route path={'/dashboard'} element={<DashboardComponent/>} />
-                        <Route path={'preferences'} element={<PreferencesComponent/>} />
+                        <Route path={'/dashboard'} element={<DashboardPage/>} />
+                        <Route path={'/preferences'} element={<PreferencesComponent/>} />
+                        <Route path={'/new-workout'} element={<NewWorkoutPage/>} />
+                        <Route path={'/workout-history'} element={<WorkoutHistoryPage/>} />
                     </Routes>
                 </BrowserRouter>
             </div>

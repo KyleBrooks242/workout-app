@@ -119,8 +119,6 @@ export const LoginComponent = (props: Props) => {
                 }
             )
             .then(data => {
-                console.log('DATA');
-                console.log(data);
                 props.setToken(data.data.token);
 
             })
