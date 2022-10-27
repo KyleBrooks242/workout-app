@@ -27,6 +27,7 @@ const userExists = async (user) => {
  * @returns {Promise<nano.DocumentInsertResponse>}
  */
 const createUser = async (userName, email, firstName, lastName, password) => {
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     console.log('Creating user...');
     const response = await db.insert({
         _id: userName,
@@ -51,9 +52,40 @@ const getUser = async (user) => {
     return await db.get(user);
 }
 
+const addExercise = async (userName, exercise) => {
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
+    console.log('Inserting exercise...');
+    const response = await db.insert({
+        _id: exercise,
+        userName: userName,
+        docType: 'EXERCISE_OPTION'
+    });
+
+    return response;
+}
+
+const getExercisesByUser = async (userName) => {
+
+    const query = {
+        selector: {
+            docType: { "$eq": "EXERCISE_OPTION"},
+            userName : { "$eq": userName }
+        },
+        fields: [ "_id" ],
+        limit: 100
+    };
+    console.log(`Fetching exercises for user ${userName}`);
+    const response = await db.find(query);
+    console.log(response);
+
+    return response;
+}
+
 
 module.exports = {
     createUser,
     getUser,
-    userExists
+    userExists,
+    getExercisesByUser,
+    addExercise
 };

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const auth = require("./middleware/auth");
-const { createUser, getUser, userExists } = require('./db/dbUtils');
+const { createUser, getUser, userExists, getExercisesByUser, addExercise} = require('./db/dbUtils');
 const apiErrorHandler = require('./errors/apiErrorHandler');
 const ApiError = require('./errors/ApiError');
 
@@ -106,6 +106,32 @@ app.post('/user',async (req, res, next) => {
         next(error);
     }
 });
+
+
+
+/**
+ * Get a list of exercise options for a given user
+ **/
+app.get('/exercise-options', async (req, res, next) => {
+    const result = await getExercisesByUser(req.query.username);
+    console.log(result)
+    res.status(200).json(result);
+})
+
+/**
+ * Add an exercise
+ **/
+app.post('/exercise', async (req, res, next) => {
+    //TODO get userName from.. where? client passes it in and we verify the JWT?
+    const rawData = req.body.data;
+    console.log(rawData);
+
+    const username  = 'testUser';
+    const exercise  = rawData.newExercise;
+
+    const result = await addExercise(username, exercise);
+    res.status(200).json(result);
+})
 
 /**
  * For all routes other than the /login or /user route...
