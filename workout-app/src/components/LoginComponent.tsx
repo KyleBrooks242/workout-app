@@ -45,7 +45,6 @@ interface Props {
 }
 
 export const LoginComponent = (props: Props) => {
-
     const [values, setValues] = useState<State>({
         username: '',
         password: '',
@@ -106,6 +105,7 @@ export const LoginComponent = (props: Props) => {
         const validData: ValidDataResponse = validateInput(data, values.createAccount);
 
         if (validData.hasErrors) {
+            console.log('data has errors!')
             setErrors({ ...validData.errors, hasError: true })
             return;
         }
@@ -138,8 +138,6 @@ export const LoginComponent = (props: Props) => {
                 }
             )
             .then((data: any) => {
-                console.log('DATA!');
-                console.log(data);
                 props.setToken(data.data.token);
 
             })

@@ -2,6 +2,13 @@ const { DBUSER, DBPASS } = process.env;
 const nano = require('nano')(`http://${DBUSER}:${DBPASS}@127.0.0.1:5984`);
 const db = nano.use('workout_app');
 
+const indexDef = {
+    index: { fields: ['_id'] },
+    name: '_id_index'
+};
+
+db.createIndex(indexDef);
+
 /**
  *
  * @param user
@@ -69,16 +76,15 @@ const getExercisesByUser = async (userName) => {
     const query = {
         selector: {
             docType: { "$eq": "EXERCISE_OPTION"},
-            userName : { "$eq": userName }
+            userName: { "$eq": userName },
+            _id: { "$ne": null }
         },
         fields: [ "_id" ],
+        sort: [{"_id": "asc"}],
         limit: 100
     };
     console.log(`Fetching exercises for user ${userName}`);
-    const response = await db.find(query);
-    console.log(response);
-
-    return response;
+    return await db.find(query);
 }
 
 

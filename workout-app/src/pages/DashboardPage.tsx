@@ -25,6 +25,7 @@ export const DashboardPage = () => {
                         </Button>
 
                     </Grid2>
+                    {/* TODO Add button and/or dropdown for an existing workout template*/}
                     <Grid2>
                         <Button
                             className={'dashboard-button'}

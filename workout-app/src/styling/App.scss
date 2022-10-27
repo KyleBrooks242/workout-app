@@ -4,6 +4,8 @@
 
 .main-logo {
   position: absolute;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
   transform: translate(-50%, -50%);
 }
 
@@ -11,7 +13,6 @@
   .main-logo {
     max-width: 100%;
     max-height: 100%;
-    top: 5%;
     left: 50%;
   }
 }
@@ -20,17 +21,14 @@
   .main-logo {
     max-width: 200px;
     max-height: 46px;
-    top: 5%;
     left: 30%;
   }
 }
 
-
-
 .App-header {
-  background-color:white;
-  border-bottom: 1px solid black;
-  min-height: 10vh;
+  background-color:lightgrey;
+  //min-height: 10vh;
+  height: 6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,8 +37,6 @@
   color: white;
 }
 
-
-//Login Component
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -57,20 +53,46 @@
     margin-top: 2rem !important;
     width: 12rem;
     height:12rem;
-
     font-size: 1.5rem;
   }
 }
-
-//.login-box {
-//  position: absolute;
-//  top: 35%;
-//  left: 50%;
-//  transform: translate(-50%, -50%);
-//}
 
 .signout-button {
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.new-exercise-page {
+  .exercise-title {
+    text-transform: capitalize;
+    //padding-top: 1rem !important;
+  }
+  .exercise-grid {
+    padding-bottom: 1rem;
+    width: 350px !important;
+    &.color-1 {
+      background-color: white;
+    }
+    &.color-0 {
+      background-color: white;
+    }
+
+    .set-title {
+      display: flex;
+      padding-left: 5rem;
+      margin-bottom: 0;
+    }
+
+  }
+
+}
+
+.exercise-dropdown {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.add-exercise-button {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
 }

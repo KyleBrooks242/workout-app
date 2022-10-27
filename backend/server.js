@@ -18,6 +18,9 @@ const port = process.env.PORT || 8080;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+//TODO parse token on every incoming request
+// app.use(tokenParser)
+
 
 /**
  * Authenticate a user given a username, password
@@ -113,8 +116,13 @@ app.post('/user',async (req, res, next) => {
  * Get a list of exercise options for a given user
  **/
 app.get('/exercise-options', async (req, res, next) => {
-    const result = await getExercisesByUser(req.query.username);
-    console.log(result)
+    const rawToken = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(rawToken, process.env.JWT_TOKEN_KEY)
+    console.log('DECODED!')
+    console.log(decoded);
+
+    const result = await getExercisesByUser(decoded.userId);
     res.status(200).json(result);
 })
 

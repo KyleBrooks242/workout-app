@@ -13,13 +13,14 @@ import {WorkoutHistoryPage} from "./pages/WorkoutHistoryPage";
 function App() {
 
     const { token, setToken, deleteToken } = useToken();
+    console.log('App Reloading...')
 
     if (!token) {
         return (
             <div className={"App"}>
                 <header className="App-header">
                     <MenuComponent
-                        isSignOutVisible={!!token}
+                        isSignOutVisible={false}
                         handleSignOut={deleteToken}/>
                 </header>
                 <LoginComponent setToken={setToken}/>
@@ -32,12 +33,13 @@ function App() {
             <div className="App">
               <header className="App-header">
                 <MenuComponent
-                    isSignOutVisible={!!token}
+                    isSignOutVisible={true}
                     handleSignOut={deleteToken}
                 />
               </header>
                 <BrowserRouter>
                     <Routes>
+                        {/*replace true with token*/}
                         <Route path="/" element={ token
                             ? <Navigate replace to="/dashboard" />
                             : <LoginComponent setToken={setToken}/> } />
