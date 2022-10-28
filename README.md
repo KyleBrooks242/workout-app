@@ -41,12 +41,6 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
     $ npm install npm -g
 
 ###
-### Yarn installation
-After installing node, this project will need yarn too, so just run the following command.
-
-      $ npm install -g yarn
-
-
 ### CouchDB
 
 https://docs.couchdb.org/en/3.2.2-docs/
@@ -64,16 +58,29 @@ https://docs.couchdb.org/en/3.2.2-docs/
 
 ## Configure app
 
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
+This project uses dotenv for managing the DB credentials as well as the JWT secret. To set this up, you will need to do the following
 
-- A setting;
-- Another setting;
-- One more setting;
+    $ cd backend
+    $ touch .env
 
-## Running the project
+Open the .env file and add the following:
 
-    $ yarn start
+    DBUSER="your_db_user"
+    DBPASS="your_db_pass"
+
+    JWT_TOKEN_KEY="your_jwt_token_key"
+
+
+## Running the backend server (dev)
+
+    $ cd backend
+    $ npm run dev
+
+## Running the frontend (dev)
+
+    $ cd workout-app
+    $ npm run start
+    
 
 ## Simple build for production
-
-    $ yarn build
+WIP
