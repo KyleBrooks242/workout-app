@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from'../logo.png';
+import logo from '../logos/logo.png';
 import {Container, Button} from "@mui/material";
 
 interface Props {

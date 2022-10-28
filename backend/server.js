@@ -1,8 +1,10 @@
+// const { expressjwt } = require("express-jwt");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const auth = require("./middleware/auth");
-const { createUser, getUser, userExists } = require('./db/dbUtils');
+const { createUser, getUser, userExists, getExercisesByUser, addExercise} = require('./db/dbUtils');
 const apiErrorHandler = require('./errors/apiErrorHandler');
+const verifyToken = require('./middleware/auth');
 const ApiError = require('./errors/ApiError');
 
 const express = require('express');
@@ -17,7 +19,6 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
 
 /**
  * Authenticate a user given a username, password
@@ -107,15 +108,33 @@ app.post('/user',async (req, res, next) => {
     }
 });
 
+//For all routes below, we want to check for and verify the JWT before continuing!
+
+app.use(verifyToken);
+
 /**
- * For all routes other than the /login or /user route...
- * let's use middleware to authenticate the user's token
- */
-app.use((req, res, next) => {
-    console.log("Token authentication should come here...");
-    console.log(req.path);
-    next();
-});
+ * Get a list of exercise options for a given user
+ **/
+app.get('/exercise-options', async (req, res, next) => {
+    console.log(`GET /exercise-options hit...`);
+    const result = await getExercisesByUser(req.user);
+    res.status(200).json(result);
+})
+
+/**
+ * Add an exercise
+ **/
+app.post('/exercise', async (req, res, next) => {
+    console.log(`POST /exercise hit...`);
+    const rawData = req.body.data;
+    console.log(rawData);
+
+    const username  = req.user
+    const exercise  = rawData.newExercise;
+
+    const result = await addExercise(username, exercise);
+    res.status(200).json(result);
+})
 
 /**
  * Our custom error handler
