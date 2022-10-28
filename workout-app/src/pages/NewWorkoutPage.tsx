@@ -55,6 +55,9 @@ export const NewWorkoutPage = () => {
                 '/exercise',
                 {
                     data: data
+                },
+                {
+                    headers: { 'authorization': `Bearer ${token}`}
                 }
             )
                 .then(async () => {

@@ -28,8 +28,6 @@ interface Props {
 
 const SETS = [1,2,3,4,5,6,7,8];
 
-//TODO
-// Make the name a dropdown where you can select existing workouts or add a new one to the list
 export const AddExerciseDialog = (props: Props) => {
 
     const [values, setValues] = useState<Exercise>({
