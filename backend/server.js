@@ -1,7 +1,5 @@
-// const { expressjwt } = require("express-jwt");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const auth = require("./middleware/auth");
 const { createUser, getUser, userExists, getExercisesByUser, addExercise} = require('./db/dbUtils');
 const apiErrorHandler = require('./errors/apiErrorHandler');
 const verifyToken = require('./middleware/auth');
