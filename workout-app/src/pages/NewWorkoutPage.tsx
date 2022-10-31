@@ -1,22 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, FormControl, Grid, InputAdornment, InputLabel, TextField} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddExerciseDialog} from "../components/AddExerciseDialog";
-import Input from "@mui/material/Input";
+
 import axios from "axios";
 import {useToken} from "../utils/useToken";
+import {ExerciseComponent} from "../components/ExerciseComponent";
+import {useNavigate} from "react-router-dom";
 
-interface Exercise {
+export interface Set {
+    weight: string
+    reps: string
+}
+
+export interface Exercise {
     name: string
     sets: number
+    index: number
+    values: Array<Set>
     newExercise?: string
 }
 
+
+
 export const NewWorkoutPage = () => {
+
+    const navigate = useNavigate();
+
+    const goToPage = (component: string) => {
+        navigate(component);
+    }
 
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [exerciseList, setExerciseList] = useState<Array<Exercise>>([]);
-    const [exerciseListOptions, setExerciseListOptions] = useState<Array<string>>(['+ Add']);
+    const [dropdownExerciseOptions, setDropdownExerciseOptions] = useState<Array<string>>(['+ Add']);
     const { token } = useToken();
 
     const fetchExerciseOptions = async () => {
@@ -28,11 +45,9 @@ export const NewWorkoutPage = () => {
             }
         )
             .then((resp : any) => {
-                const list = resp.data.docs.map(doc => { return doc._id })
-                console.log('LIST');
-                console.log(list);
+                const list = resp.data.docs.map((doc : any) => { return doc.exercise })
                 list.push('+ Add');
-                setExerciseListOptions(list);
+                setDropdownExerciseOptions(list);
 
             })
             .catch(error => {
@@ -41,11 +56,11 @@ export const NewWorkoutPage = () => {
             });
     }
 
-    //TODO FIGURE OUT WHY THIS IS BEING CALLED TWICE
     useEffect(() => {
-        fetchExerciseOptions().catch((error) => {
-            console.log(error)
-        })
+        fetchExerciseOptions()
+            .catch((error) => {
+                console.log(error)
+            })
     }, [])
 
     const handleAddExercise = async (data: Exercise) => {
@@ -60,66 +75,103 @@ export const NewWorkoutPage = () => {
                     headers: { 'authorization': `Bearer ${token}`}
                 }
             )
-                .then(async () => {
-                    console.log(`Successfully added exercise!`);
-                    await fetchExerciseOptions()
+            .then(async () => {
+                console.log(`Successfully added exercise!`);
+                await fetchExerciseOptions()
 
-                })
-                .catch(error => {
-                    //TODO parse error message and, if user already exists,
-                    console.error('Error adding exercise!');
-                    console.error(error)
-                });
+            })
+            .catch(error => {
+                console.error('Error adding exercise!');
+                console.error(error)
+            });
             data = {
                 name: data.newExercise,
-                sets: data.sets
+                sets: data.sets,
+                index: exerciseList.length,
+                values: []
+            }
+            //Array(data.sets).fill({weight: '', reps: ''}) results in attempts to update a single index with updating
+            //the entire array
+            for (let i = 0; i < data.sets; i++) {
+                data.values.push({
+                    weight: '',
+                    reps: ''
+                })
+            }
+        }
+        else {
+            data.index = exerciseList.length
+            //Array(data.sets).fill({weight: '', reps: ''}) results in attempts to update a single index with updating
+            //the entire array
+            data.values = [];
+            for (let i = 0; i < data.sets; i++) {
+                data.values.push({
+                    weight: '',
+                    reps: ''
+                })
             }
         }
 
-
-        //TODO remove newExercise from data before appending it to the exerciseList
         const tempList = exerciseList;
         tempList.push(data);
         setExerciseList(tempList);
         setShowDialog(false);
     }
 
-    const renderSets = (sets: number):any => {
-        const setList: any = [];
-        for (let i = 0; i < sets; i++) {
-            setList.push(
-                <div key={i}>
-                    <h4 className={'set-title'}>Set {i + 1}</h4>
-                    <Grid>
-                        <Input placeholder="Weight" sx={{ m: .5, width: '8ch' }} />
-                        <Input placeholder="Reps" sx={{ m: .5, width: '8ch' }}/>
-                    </Grid>
-                </div>
-            )
-        }
+    const handleExerciseInput = async (event: any, setIndex: number, exerciseIndex: number, field: number) => {
+        console.log(`Handling exercise input!`);
+        const tempList: Array<Exercise> = [...exerciseList];
+        const tempExercise: Exercise = {...exerciseList[exerciseIndex]};
+        const tempValues: Array<Set> = [...tempExercise.values];
 
-        return setList
+        //Field is either 0 or 1... the !! turns this into a true/false scenario to determine if we are updating the weight or reps field
+        !!field ? tempValues[setIndex].reps = event.target.value : tempValues[setIndex].weight = event.target.value;
+
+        tempExercise.values = tempValues;
+        tempList[exerciseIndex] = tempExercise;
+
+        setExerciseList(tempList);
+
+    }
+
+    //Is there a better way to do this, that does not rely on user hitting a button?
+    //TODO if the user clicks away from this screen, we should save off data
+    const saveWorkout = async () => {
+        await axios.put(
+            '/workout',
+            {
+                data: JSON.stringify(exerciseList)
+            },
+            {
+                headers: { 'authorization': `Bearer ${token}`}
+            }
+        )
+            .then(async () => {
+                console.log(`Successfully saved workout!`);
+                await fetchExerciseOptions()
+
+            })
+            .catch(error => {
+                console.error('Error saving workout!');
+                console.error(error)
+            });
     }
 
     const renderExercises = ():any => {
         return exerciseList.map((exercise, index) => {
             return (
-                <div key={index} className={'login-wrapper'}>
-                    <Grid className={`exercise-grid color-${index % 2}`}>
-                        <h2 className={'exercise-title'}>{ exercise.name }</h2>
-                        { renderSets(exercise.sets) }
-                    </Grid>
+                <div key={index} className={'content-wrapper'}>
+                    <ExerciseComponent  exercise={ exercise } handleInput={ handleExerciseInput }/>
                 </div>
             )
         })
     }
 
-
     return (
         <Box className={'new-exercise-page'}>
             <AddExerciseDialog
                 isOpen={showDialog}
-                exerciseListOptions={exerciseListOptions}
+                dropdownExerciseOptions={dropdownExerciseOptions}
                 handleAddExercise={(data: any) => handleAddExercise(data)}
                 handleClose={() => setShowDialog(false)}/>
 
@@ -131,7 +183,23 @@ export const NewWorkoutPage = () => {
                 variant="outlined"
                 onClick={() => setShowDialog(true)}
             >
-                Add Exercise
+                Add
+            </Button>
+
+            <Button
+                className={'add-exercise-button'}
+                variant="outlined"
+                onClick={() => saveWorkout()}
+            >
+                Save
+            </Button>
+
+            <Button
+                className={'add-exercise-button'}
+                variant="outlined"
+                onClick={() => goToPage('/dashboard')}
+            >
+                Home
             </Button>
         </Box>
     )

@@ -3,7 +3,7 @@ import './styling/App.scss';
 import { LoginComponent } from "./components/LoginComponent";
 import { MenuComponent } from "./components/MenuComponent";
 
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate, useNavigate} from 'react-router-dom';
 import { DashboardPage } from './pages/DashboardPage';
 import { PreferencesComponent } from './components/PreferencesComponent';
 import { useToken } from "./utils/useToken";
@@ -13,7 +13,6 @@ import {WorkoutHistoryPage} from "./pages/WorkoutHistoryPage";
 function App() {
 
     const { token, setToken, deleteToken } = useToken();
-    console.log('App Reloading...')
 
     if (!token) {
         return (
@@ -39,7 +38,6 @@ function App() {
               </header>
                 <BrowserRouter>
                     <Routes>
-                        {/*replace true with token*/}
                         <Route path="/" element={ token
                             ? <Navigate replace to="/dashboard" />
                             : <LoginComponent setToken={setToken}/> } />

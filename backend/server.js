@@ -1,9 +1,9 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { createUser, getUser, userExists, getExercisesByUser, addExercise} = require('./db/dbUtils');
-const apiErrorHandler = require('./errors/apiErrorHandler');
+const { createUser, getUser, userExists, getExercisesByUser, addExercise, upsertWorkout, getWorkoutByUser} = require('./db/dbUtils');
+const apiErrorHandler = require('./middleware/errors/apiErrorHandler');
 const verifyToken = require('./middleware/auth');
-const ApiError = require('./errors/ApiError');
+const ApiError = require('./middleware/errors/ApiError');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -132,6 +132,29 @@ app.post('/exercise', async (req, res, next) => {
 
     const result = await addExercise(username, exercise);
     res.status(200).json(result);
+})
+
+app.put('/workout', async(req, res, next) => {
+    console.log(`PUT /workout hit...`);
+
+    const workout = req.body.data;
+    console.log(workout);
+
+    const result = await upsertWorkout(req.user, workout);
+
+    res.status(200).json(result);
+
+})
+
+app.get('/workout', async(req, res, next) => {
+    console.log(`GET /workout hit...`);
+
+
+    const result = await getWorkoutByUser(req.user);
+    console.log(result.docs);
+
+    res.status(200).json(result);
+
 })
 
 /**

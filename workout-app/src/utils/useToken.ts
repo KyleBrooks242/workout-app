@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export const useToken = () => {
+
     const getToken = () => {
         const token = localStorage.getItem('token');
         return token ? token : undefined;
