@@ -160,7 +160,7 @@ export const LoginComponent = (props: Props) => {
                 />
 
             }
-            <div className={'login-wrapper'}>
+            <div className={'content-wrapper'}>
                 {/*<h2>Let's See Some Id</h2>*/}
 
 
@@ -185,7 +185,7 @@ export const LoginComponent = (props: Props) => {
                 {
                     values.createAccount &&
 
-                    <div className={'login-wrapper'}>
+                    <div className={'content-wrapper'}>
 
                         <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
                             <InputLabel htmlFor="firstName">

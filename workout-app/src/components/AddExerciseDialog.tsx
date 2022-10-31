@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Input from "@mui/material/Input";
+import {ThreeK} from "@mui/icons-material";
 
 
 interface Exercise {
@@ -23,15 +24,15 @@ interface Props {
     handleAddExercise: any
     isOpen: boolean
     handleClose: any
-    exerciseListOptions: Array<string>
+    dropdownExerciseOptions: Array<string>
 }
 
-const SETS = [1,2,3,4,5,6,7,8];
+const SETS = [1,2,3,4,5,6,7,8,9,10];
 
 export const AddExerciseDialog = (props: Props) => {
 
     const [values, setValues] = useState<Exercise>({
-        name: props.exerciseListOptions[0],
+        name: props.dropdownExerciseOptions[0],
         sets: 1,
         newExercise: ''
     })
@@ -61,7 +62,7 @@ export const AddExerciseDialog = (props: Props) => {
                             label="Exercise"
                             onChange={(event) => handleChange(event,'name')}
                         >
-                            { renderDropdown(props.exerciseListOptions) }
+                            { renderDropdown(props.dropdownExerciseOptions) }
                         </Select>
                     </FormControl>
                     { values.name === '+ Add' &&

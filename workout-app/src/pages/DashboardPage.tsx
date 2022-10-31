@@ -18,7 +18,7 @@ export const DashboardPage = () => {
                     <Grid2>
                         <Button
                             className={'dashboard-button'}
-                            variant='contained'
+                            variant='outlined'
                             size='large'
                             onClick={() => goToPage('/new-workout')}
                         >New Workout
@@ -29,7 +29,7 @@ export const DashboardPage = () => {
                     <Grid2>
                         <Button
                             className={'dashboard-button'}
-                            variant={'contained'}
+                            variant={'outlined'}
                             size={'large'}
                             onClick={() => goToPage('/workout-history')}
                         >History
