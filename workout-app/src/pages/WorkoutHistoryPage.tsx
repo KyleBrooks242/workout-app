@@ -51,43 +51,60 @@ export const WorkoutHistoryPage = () => {
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, []);
+
+    const formatWorkoutName = (workoutName) => {
+        if (workoutName.length > 16) {
+            return `${workoutName.substring(0, 16)}...`
+        }
+        return workoutName;
+    }
+
+    const formatExerciseName = (exerciseName) => {
+        if (exerciseName.length > 16) {
+            return `${exerciseName.substring(0, 16)}...`
+        }
+        return exerciseName;
+    }
 
     const formatWorkoutHistory = () => {
         const workoutList : any = [];
         workouts.map((workout: any, i) => {
-            const parsedWorkout = JSON.parse(workout.value);
             workoutList.push(
-                <TableHead key={`${i}-header`}>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell/>
+                <TableHead>
+                    <TableRow
+                        key={`${workout.workoutName}-${i}-header`}
+                        className={'table-header-row'}
+                    >
+                        <TableCell><b>{formatWorkoutName(workout.workoutName)}</b></TableCell>
                         <TableCell/>
                         <TableCell align={'right'}><b>{workout.date}</b></TableCell>
                     </TableRow>
                 </TableHead>
             )
 
-            parsedWorkout.map((exercise: any, j) => {
-                console.log("EXERCISE");
-                console.log(exercise);
-
+            workout.value.map((exercise: any, j) => {
                 workoutList.push(
                     <TableBody>
-                        <TableRow>
-                            <TableCell>{exercise.name}</TableCell>
-                            <TableCell/>
-                            <TableCell>Weight</TableCell>
-                            <TableCell>Reps</TableCell>
+                        <TableRow
+                            key={`${exercise.name}-${j}`}
+                            className={'table-header-row-2'}
+                        >
+                            <TableCell><b>{formatExerciseName(exercise.name)}</b></TableCell>
+                            <TableCell align={'right'}><b>Weight</b></TableCell>
+                            <TableCell align={'right'}><b>Reps</b></TableCell>
                         </TableRow>
                         {
-                            exercise.values.map((set, index) => {
+                            exercise.values.map((set, k) => {
+                                const color = k % 2;
                                 return (
-                                    <TableRow>
-                                        <TableCell align={'right'}>Set {index + 1}</TableCell>
-                                        <TableCell/>
-                                        <TableCell>{set.weight}</TableCell>
-                                        <TableCell>{set.reps}</TableCell>
+                                    <TableRow
+                                        key={`${set.weight}-${k}`}
+                                        className={`table-record-row-${color}`}
+                                    >
+                                        <TableCell align={'center'}>Set {k + 1}</TableCell>
+                                        <TableCell align={'right'}>{set.weight}</TableCell>
+                                        <TableCell align={'right'}>{set.reps}</TableCell>
                                     </TableRow>
                                 )
                             })
@@ -101,19 +118,16 @@ export const WorkoutHistoryPage = () => {
         return workoutList;
     }
 
-    // console.table(workouts);
-
     return (
-        <Box className={'new-exercise-page'}>
-            <h2>History</h2>
-            <Divider />
-            <TableContainer component={Paper}>
+        <Box className={'page-content'}>
+            <h2 className={'page-header'}>History</h2>
+            <TableContainer >
                 <Table sx={{ minWidth: 375 }} size="small" aria-label="workout history">
                 { formatWorkoutHistory() }
                 </Table>
             </TableContainer>
             <Button
-                className={'add-exercise-button'}
+                className={'add-exercise-button primary-outline-button'}
                 variant="outlined"
                 onClick={() => goToPage('/dashboard')}
             >

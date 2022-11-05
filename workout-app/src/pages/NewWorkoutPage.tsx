@@ -1,12 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button} from "@mui/material";
+import {Box, Button, FormControl, Grid, Input, InputLabel, MenuItem, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddExerciseDialog} from "../components/AddExerciseDialog";
-
 import axios from "axios";
 import {useToken} from "../utils/useToken";
 import {ExerciseComponent} from "../components/ExerciseComponent";
 import {useNavigate} from "react-router-dom";
+import Select from "@mui/material/Select";
+import {AddWorkoutCategoryDialog} from "../components/AddWorkoutCategoryDialog";
+import {
+    saveWorkoutRequest,
+    fetchCategoriesRequest,
+    fetchExercisesRequest, handleAddExerciseRequest, handleAddCategoryRequest
+} from "../utils/requests";
+
+const dayjs = require('dayjs');
 
 export interface Set {
     weight: string
@@ -21,105 +29,70 @@ export interface Exercise {
     newExercise?: string
 }
 
+/**
+ * TODO
+ * 1. Figure out why so many rerenders are happening at the start (and is this a bad thing..?
+ * 2. Fix how the workout category component works.. aka get console warnings to go away
+ * 3. Continue refactoring how requests are offloaded into a helper file
+ * 4. Make it so that saving a workout takes in the workout name and category
+ * 5. UI Tweaks
+ */
 
 
 export const NewWorkoutPage = () => {
 
+    const { token } = useToken();
     const navigate = useNavigate();
-
-    const goToPage = (component: string) => {
-        navigate(component);
-    }
 
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [exerciseList, setExerciseList] = useState<Array<Exercise>>([]);
     const [dropdownExerciseOptions, setDropdownExerciseOptions] = useState<Array<string>>(['+ Add']);
-    const { token } = useToken();
-
-    const fetchExerciseOptions = async () => {
-        console.log("Fetching exercise options...");
-        await axios.get(
-            `/exercise-options`,
-            {
-                headers: { 'authorization': `Bearer ${token}`}
-            }
-        )
-            .then((resp : any) => {
-                const list = resp.data.docs.map((doc : any) => { return doc.exercise })
-                list.push('+ Add');
-                setDropdownExerciseOptions(list);
-
-            })
-            .catch(error => {
-                console.error('Error fetching exercise options!');
-                console.error(error)
-            });
+    const [dropdownWorkoutCategories, setDrowpdownWorkoutCategories] = useState<Array<string>>(['None', '+ Add'])
+    const [isCategoryDialogOpen, setIsWorkoutCategoryDialogOpen] = useState<boolean>(false);
+    const [values, setValues] = useState<any>({
+        category: dropdownWorkoutCategories[0],
+        workoutName: `Workout ${dayjs().format('MM-DD-YYYY')}`
+    })
+    const goToPage = (component: string) => {
+        navigate(component);
     }
 
     useEffect(() => {
-        fetchExerciseOptions()
+        fetchCategories()
+            .then(async () => {
+                await fetchExercises()
+            })
             .catch((error) => {
                 console.log(error)
             })
     }, [])
 
+    const handleChange = (event: any, prop: keyof any) => {
+        if (event.target.value === '+ Add') {
+            setIsWorkoutCategoryDialogOpen(true);
+        }
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const fetchCategories = async () => {
+        const categories = await fetchCategoriesRequest(token);
+        setDrowpdownWorkoutCategories(categories);
+    }
+
+    const fetchExercises = async () => {
+        const list = await fetchExercisesRequest(token);
+        setDropdownExerciseOptions(list);
+    }
+
     const handleAddExercise = async (data: Exercise) => {
-
-        if (data.name === '+ Add' && data.newExercise && data.newExercise !== '') {
-            await axios.post(
-                '/exercise',
-                {
-                    data: data
-                },
-                {
-                    headers: { 'authorization': `Bearer ${token}`}
-                }
-            )
-            .then(async () => {
-                console.log(`Successfully added exercise!`);
-                await fetchExerciseOptions()
-
-            })
-            .catch(error => {
-                console.error('Error adding exercise!');
-                console.error(error)
-            });
-            data = {
-                name: data.newExercise,
-                sets: data.sets,
-                index: exerciseList.length,
-                values: []
-            }
-            //Array(data.sets).fill({weight: '', reps: ''}) results in attempts to update a single index with updating
-            //the entire array
-            for (let i = 0; i < data.sets; i++) {
-                data.values.push({
-                    weight: '',
-                    reps: ''
-                })
-            }
-        }
-        else {
-            data.index = exerciseList.length
-            //Array(data.sets).fill({weight: '', reps: ''}) results in attempts to update a single index with updating
-            //the entire array
-            data.values = [];
-            for (let i = 0; i < data.sets; i++) {
-                data.values.push({
-                    weight: '',
-                    reps: ''
-                })
-            }
-        }
-
+        const result = await handleAddExerciseRequest(data, exerciseList, token)
         const tempList = exerciseList;
-        tempList.push(data);
+        tempList.push(result);
         setExerciseList(tempList);
         setShowDialog(false);
     }
 
     const handleExerciseInput = async (event: any, setIndex: number, exerciseIndex: number, field: number) => {
-        console.log(`Handling exercise input!`);
         const tempList: Array<Exercise> = [...exerciseList];
         const tempExercise: Exercise = {...exerciseList[exerciseIndex]};
         const tempValues: Array<Set> = [...tempExercise.values];
@@ -137,24 +110,16 @@ export const NewWorkoutPage = () => {
     //Is there a better way to do this, that does not rely on user hitting a button?
     //TODO if the user clicks away from this screen, we should save off data
     const saveWorkout = async () => {
-        await axios.put(
-            '/workout',
-            {
-                data: JSON.stringify(exerciseList)
-            },
-            {
-                headers: { 'authorization': `Bearer ${token}`}
-            }
-        )
-            .then(async () => {
-                console.log(`Successfully saved workout!`);
-                await fetchExerciseOptions()
+        await saveWorkoutRequest(exerciseList, values.workoutName, token);
 
-            })
-            .catch(error => {
-                console.error('Error saving workout!');
-                console.error(error)
-            });
+    }
+
+    const handleAddCategory = async (category) => {
+        await handleAddCategoryRequest(category, token)
+        .then(async () => {
+            await fetchCategories(); //TODO is this necessary
+            setValues({...values, category: category})
+        })
     }
 
     const renderExercises = ():any => {
@@ -167,8 +132,48 @@ export const NewWorkoutPage = () => {
         })
     }
 
+    const renderDropdownOptions = (items: Array<string | number>) => {
+        return items.map(item => {
+            return <MenuItem key={item} value={item}>{item.toString().toUpperCase()}</MenuItem>
+        })
+    }
+    console.log(values);
+
     return (
-        <Box className={'new-exercise-page'}>
+        <Box className={'page-content'}>
+
+            <AddWorkoutCategoryDialog
+
+             handleAddCategory={(category) => handleAddCategory(category)}
+             handleClose={() => {
+                 setValues({...values, category: dropdownWorkoutCategories[0]})
+                 setIsWorkoutCategoryDialogOpen(false)
+             }}
+             isOpen={isCategoryDialogOpen}
+            />
+
+            <Input
+                className={'workout-name'}
+                placeholder={values.workoutName}
+                onChange={(event) => handleChange(event, 'workoutName')}
+            />
+            {/*//TODO This is causing tons of warnings in console*/}
+            {/*<FormControl*/}
+            {/*    className={'exercise-category-dropdown'}*/}
+            {/*    size={'small'}*/}
+            {/*>*/}
+            {/*    <InputLabel id="category-label">Category</InputLabel>*/}
+            {/*    <Select*/}
+            {/*        labelId="set-label"*/}
+            {/*        id="category-dropdown"*/}
+            {/*        value={values.category}*/}
+            {/*        label="Category"*/}
+            {/*        onChange={(event) => handleChange(event, 'category')}*/}
+            {/*    >*/}
+            {/*        { renderDropdownOptions(dropdownWorkoutCategories)}*/}
+            {/*    </Select>*/}
+            {/*</FormControl>*/}
+
             <AddExerciseDialog
                 isOpen={showDialog}
                 dropdownExerciseOptions={dropdownExerciseOptions}
@@ -178,28 +183,28 @@ export const NewWorkoutPage = () => {
             { exerciseList ? renderExercises() : null }
 
             <Button
-                className={'add-exercise-button'}
-                startIcon={<AddIcon />}
+                className={'add-exercise-button primary-button-outlined'}
                 variant="outlined"
-                onClick={() => setShowDialog(true)}
+                onClick={() => goToPage('/dashboard')}
             >
-                Add
+                Home
             </Button>
 
             <Button
-                className={'add-exercise-button'}
-                variant="outlined"
+                className={'add-exercise-button primary-button'}
+                variant="contained"
                 onClick={() => saveWorkout()}
             >
                 Save
             </Button>
 
             <Button
-                className={'add-exercise-button'}
-                variant="outlined"
-                onClick={() => goToPage('/dashboard')}
+                className={'add-exercise-button primary-button'}
+                startIcon={<AddIcon />}
+                variant="contained"
+                onClick={() => setShowDialog(true)}
             >
-                Home
+                Add
             </Button>
         </Box>
     )

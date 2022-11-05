@@ -1,4 +1,9 @@
-$primary: #1976d2;
+//$primary: #1976d2;
+$primary: #35AFFC;
+$secondary: #7fc4f1;
+
+$gray-blue: #EEF0F2;
+$gray: #65655E;
 
 .App {
   text-align: center;
@@ -28,7 +33,7 @@ $primary: #1976d2;
 }
 
 .App-header {
-  background-color:lightgrey;
+  background-color: white;
   //min-height: 10vh;
   height: 6rem;
   display: flex;
@@ -64,7 +69,10 @@ $primary: #1976d2;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.new-exercise-page {
+.page-content {
+  .page-header {
+    margin-top: 0 !important;
+  }
   .exercise-title {
     text-transform: capitalize;
     text-align: start;
@@ -85,14 +93,14 @@ $primary: #1976d2;
     .set-title {
       text-align: center;
       font-weight: bold;
-      padding-left: 1rem;
-      padding-right: 2rem;
       margin-bottom: 0;
       margin-top: .5rem;
     }
-
   }
 
+  .workout-name {
+    margin-right: 1rem;
+  }
 }
 
 .exercise-dropdown {
@@ -109,4 +117,36 @@ $primary: #1976d2;
 .workout-history-date {
   text-align: end;
   padding-right: .5rem;
+}
+
+.primary-button {
+  background-color: $primary !important;
+}
+
+.primary-outline-button {
+  border-color: $primary !important;
+}
+
+.table-header-row {
+  background-color: $primary;
+  .MuiTableCell-root {
+    color: white;
+    border: 0 $primary !important;
+  }
+}
+
+.table-header-row-2 {
+  background-color: $secondary;
+  .MuiTableCell-root {
+    color: white;
+    border: 0 darkgray !important;
+  }
+}
+
+.table-record-row-0 {
+  background-color: $gray-blue;
+}
+
+.table-record-row-1 {
+  background-color: white;
 }

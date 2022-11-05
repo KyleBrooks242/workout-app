@@ -1,6 +1,15 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { createUser, getUser, userExists, getExercisesByUser, addExercise, upsertWorkout, getWorkoutByUser} = require('./db/dbUtils');
+const {
+    createUser,
+    getUser,
+    userExists,
+    getExercisesByUser,
+    addExerciseOption,
+    upsertWorkout,
+    getWorkoutByUser,
+    getWorkoutCategoriesByUser, addWorkoutCategory,
+} = require('./db/dbUtils');
 const apiErrorHandler = require('./middleware/errors/apiErrorHandler');
 const verifyToken = require('./middleware/auth');
 const ApiError = require('./middleware/errors/ApiError');
@@ -113,9 +122,24 @@ app.use(verifyToken);
 /**
  * Get a list of exercise options for a given user
  **/
-app.get('/exercise-options', async (req, res, next) => {
-    console.log(`GET /exercise-options hit...`);
+app.get('/exercise-option', async (req, res, next) => {
+    console.log(`GET /exercise-option hit...`);
     const result = await getExercisesByUser(req.user);
+    res.status(200).json(result);
+})
+
+app.post('/workout-category', async (req, res, next) => {
+    console.log(`POST /workout-category hit...`);
+
+    const category = req.body.data;
+
+    const result = await addWorkoutCategory(req.user, category);
+    res.status(200).json(result);
+})
+
+app.get('/workout-category', async (req, res, next) => {
+    console.log(`GET /workout-category hit...`);
+    const result = await getWorkoutCategoriesByUser(req.user);
     res.status(200).json(result);
 })
 
@@ -130,7 +154,7 @@ app.post('/exercise', async (req, res, next) => {
     const username  = req.user
     const exercise  = rawData.newExercise;
 
-    const result = await addExercise(username, exercise);
+    const result = await addExerciseOption(username, exercise);
     res.status(200).json(result);
 })
 

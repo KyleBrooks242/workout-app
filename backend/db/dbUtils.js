@@ -66,7 +66,7 @@ const getUser = async (user) => {
     return await db.get(user);
 }
 
-const addExercise = async (user, exercise) => {
+const addExerciseOption = async (user, exercise) => {
     //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     console.log('Inserting exercise...');
     const response = await db.insert({
@@ -96,24 +96,55 @@ const getExercisesByUser = async (user) => {
     return result;
 }
 
+const getWorkoutCategoriesByUser = async (user) => {
+
+    const query = {
+        selector: {
+            docType: { "$eq": "WORKOUT_CATEGORY"},
+            userName: { "$eq": user },
+            exercise: { "$ne": null }
+        },
+        fields: [ "category" ],
+        sort: [{"_id": "asc"}],
+        limit: 100
+    };
+    console.log(`Fetching exercises for user ${user}`);
+    const result = await db.find(query);
+    return result;
+}
+
+const addWorkoutCategory = async (user, category) => {
+
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
+    console.log('Inserting workout category...');
+    const response = await db.insert({
+        _id: `${user}_${category}`,
+        userName: user,
+        category: category,
+        docType: 'WORKOUT_CATEGORY'
+    });
+
+    return response;
+}
+
 //TODO.. we have a scenario where someone working out at midnight may end up with two workouts
 // We really need the workout to have a name given to it and associated for the duration
 const upsertWorkout = async (user, workout) => {
-
+    const parsedWorkout = JSON.parse(workout);
 
     const date = dayjs().format('YYYY-MM-DD');
-    const id = `${user}_workout_${date}`
+    const id = `${user}_${parsedWorkout.workoutName}_${date}`
 
     await db.get(id)
         .then(res => {
             return db.insert(
                 {
                     _id: id,
-                    value: workout,
+                    value: parsedWorkout.exerciseList,
+                    workoutName: parsedWorkout.workoutName,
                     userName: user,
                     date: date,
                     // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
-                    // workoutName: workoutName If we decide to let user give a name their workouts..?
                     docType: 'WORKOUT',
                     _rev: res._rev
                 }
@@ -121,15 +152,15 @@ const upsertWorkout = async (user, workout) => {
         })
         .catch((error) => {
             console.log(error);
-            //If we don't find the document, no problem.. insert as new!
+            //If we don't find the document, no problem... insert as new!
             return db.insert(
                 {
                     _id: id,
-                    value: workout,
+                    value: parsedWorkout.exerciseList,
+                    workoutName: parsedWorkout.workoutName,
                     userName: user,
                     date: date,
                     // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
-                    // workoutName: workoutName If we decide to let user give a name their workouts..?
                     docType: 'WORKOUT'
                 }
             )
@@ -143,7 +174,7 @@ const getWorkoutByUser = async (user) => {
             userName: { "$eq": user },
             value: { "$ne": null }
         },
-        fields: [ "value", "date" ],
+        fields: [ "value", "date", "workoutName" ],
         sort: [{"date": "desc"}],
         limit: 100
     };
@@ -163,7 +194,9 @@ module.exports = {
     getUser,
     userExists,
     getExercisesByUser,
-    addExercise,
+    addExerciseOption,
     upsertWorkout,
-    getWorkoutByUser
+    getWorkoutByUser,
+    getWorkoutCategoriesByUser,
+    addWorkoutCategory
 };

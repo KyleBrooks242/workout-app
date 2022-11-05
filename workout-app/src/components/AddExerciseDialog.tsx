@@ -38,7 +38,6 @@ export const AddExerciseDialog = (props: Props) => {
     })
 
     const handleChange = (event: any, prop: keyof Exercise) => {
-
         setValues({ ...values, [prop]: event.target.value });
     };
 
@@ -91,8 +90,8 @@ export const AddExerciseDialog = (props: Props) => {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleClose}>Cancel</Button>
-                    <Button variant={'contained'} onClick={() => props.handleAddExercise(values)}>Add</Button>
+                    <Button className={'primary-outline-button'} variant={'outlined'} onClick={props.handleClose}>Cancel</Button>
+                    <Button className={'primary-button'} variant={'contained'} onClick={() => props.handleAddExercise(values)}>Add</Button>
                 </DialogActions>
             </Dialog>
         </Box>

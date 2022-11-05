@@ -22,7 +22,7 @@ export const MenuComponent = (props: Props) => {
                 props.isSignOutVisible
                     ?
                     <Button
-                        className={'signout-button'}
+                        className={'signout-button primary-button'}
                         variant="contained"
                         onClick={() => props.handleSignOut()}
                     >Sign Out</Button>
