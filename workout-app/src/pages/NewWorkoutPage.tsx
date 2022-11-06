@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, FormControl, Grid, Input, InputLabel, MenuItem, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddExerciseDialog} from "../components/AddExerciseDialog";
-import axios from "axios";
 import {useToken} from "../utils/useToken";
 import {ExerciseComponent} from "../components/ExerciseComponent";
 import {useNavigate} from "react-router-dom";
@@ -47,7 +46,7 @@ export const NewWorkoutPage = () => {
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [exerciseList, setExerciseList] = useState<Array<Exercise>>([]);
     const [dropdownExerciseOptions, setDropdownExerciseOptions] = useState<Array<string>>(['+ Add']);
-    const [dropdownWorkoutCategories, setDrowpdownWorkoutCategories] = useState<Array<string>>(['None', '+ Add'])
+    const [dropdownWorkoutCategories, setDropdownWorkoutCategories] = useState<Array<string>>(['None', '+ Add'])
     const [isCategoryDialogOpen, setIsWorkoutCategoryDialogOpen] = useState<boolean>(false);
     const [values, setValues] = useState<any>({
         category: dropdownWorkoutCategories[0],
@@ -76,7 +75,7 @@ export const NewWorkoutPage = () => {
 
     const fetchCategories = async () => {
         const categories = await fetchCategoriesRequest(token);
-        setDrowpdownWorkoutCategories(categories);
+        setDropdownWorkoutCategories(categories);
     }
 
     const fetchExercises = async () => {
@@ -110,14 +109,14 @@ export const NewWorkoutPage = () => {
     //Is there a better way to do this, that does not rely on user hitting a button?
     //TODO if the user clicks away from this screen, we should save off data
     const saveWorkout = async () => {
-        await saveWorkoutRequest(exerciseList, values.workoutName, token);
-
+        await saveWorkoutRequest(exerciseList, values.workoutName, values.category, token);
     }
 
     const handleAddCategory = async (category) => {
         await handleAddCategoryRequest(category, token)
         .then(async () => {
-            await fetchCategories(); //TODO is this necessary
+            await fetchCategories();
+            setIsWorkoutCategoryDialogOpen(false);
             setValues({...values, category: category})
         })
     }
@@ -137,7 +136,6 @@ export const NewWorkoutPage = () => {
             return <MenuItem key={item} value={item}>{item.toString().toUpperCase()}</MenuItem>
         })
     }
-    console.log(values);
 
     return (
         <Box className={'page-content'}>
@@ -157,22 +155,22 @@ export const NewWorkoutPage = () => {
                 placeholder={values.workoutName}
                 onChange={(event) => handleChange(event, 'workoutName')}
             />
-            {/*//TODO This is causing tons of warnings in console*/}
-            {/*<FormControl*/}
-            {/*    className={'exercise-category-dropdown'}*/}
-            {/*    size={'small'}*/}
-            {/*>*/}
-            {/*    <InputLabel id="category-label">Category</InputLabel>*/}
-            {/*    <Select*/}
-            {/*        labelId="set-label"*/}
-            {/*        id="category-dropdown"*/}
-            {/*        value={values.category}*/}
-            {/*        label="Category"*/}
-            {/*        onChange={(event) => handleChange(event, 'category')}*/}
-            {/*    >*/}
-            {/*        { renderDropdownOptions(dropdownWorkoutCategories)}*/}
-            {/*    </Select>*/}
-            {/*</FormControl>*/}
+
+            <FormControl
+                className={'workout-category-dropdown'}
+                size={'small'}
+            >
+                <InputLabel id="category-label">Category</InputLabel>
+                <Select
+                    labelId="set-label"
+                    id="category-dropdown"
+                    value={values.category}
+                    label="Category"
+                    onChange={(event) => handleChange(event, 'category')}
+                >
+                    { renderDropdownOptions(dropdownWorkoutCategories)}
+                </Select>
+            </FormControl>
 
             <AddExerciseDialog
                 isOpen={showDialog}

@@ -4,9 +4,6 @@ import { useToken } from "../utils/useToken";
 import {
     Box,
     Button,
-    Divider,
-    Grid,
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -71,42 +68,63 @@ export const WorkoutHistoryPage = () => {
         const workoutList : any = [];
         workouts.map((workout: any, i) => {
             workoutList.push(
-                <TableHead>
+                <TableHead key={`${workout.workoutName}-${i}-header`}>
                     <TableRow
-                        key={`${workout.workoutName}-${i}-header`}
+                        key={`${workout.workoutName}-${i}-row`}
                         className={'table-header-row'}
                     >
                         <TableCell><b>{formatWorkoutName(workout.workoutName)}</b></TableCell>
-                        <TableCell/>
+                        <TableCell><b>{workout.category}</b></TableCell>
                         <TableCell align={'right'}><b>{workout.date}</b></TableCell>
                     </TableRow>
                 </TableHead>
             )
 
             workout.value.map((exercise: any, j) => {
-                workoutList.push(
+                return workoutList.push(
                     <TableBody>
                         <TableRow
-                            key={`${exercise.name}-${j}`}
+                            key={`${exercise.name}-${i}${j}-row`}
                             className={'table-header-row-2'}
                         >
-                            <TableCell><b>{formatExerciseName(exercise.name)}</b></TableCell>
+                            <TableCell align={'center'} aria-label={exercise.name}><b>{formatExerciseName(exercise.name)}</b></TableCell>
                             <TableCell align={'right'}><b>Weight</b></TableCell>
                             <TableCell align={'right'}><b>Reps</b></TableCell>
                         </TableRow>
                         {
                             exercise.values.map((set, k) => {
                                 const color = k % 2;
-                                return (
-                                    <TableRow
-                                        key={`${set.weight}-${k}`}
-                                        className={`table-record-row-${color}`}
-                                    >
-                                        <TableCell align={'center'}>Set {k + 1}</TableCell>
-                                        <TableCell align={'right'}>{set.weight}</TableCell>
-                                        <TableCell align={'right'}>{set.reps}</TableCell>
-                                    </TableRow>
-                                )
+                                if (k === exercise.values.length - 1) {
+                                    return (
+                                        <React.Fragment>
+                                            <TableRow
+                                                key={`${set.weight}-${i}${j}${k}`}
+                                                className={`table-record-row-${color}`}
+                                            >
+                                                <TableCell align={'center'}>Set {k + 1}</TableCell>
+                                                <TableCell align={'right'}>{set.weight}</TableCell>
+                                                <TableCell align={'right'}>{set.reps}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell/>
+                                                <TableCell/>
+                                                <TableCell/>
+                                            </TableRow>
+                                        </React.Fragment>
+                                    )
+                                }
+                                else {
+                                    return (
+                                        <TableRow
+                                            key={`${set.weight}-${i}${j}${k}`}
+                                            className={`table-record-row-${color}`}
+                                        >
+                                            <TableCell align={'center'}>Set {k + 1}</TableCell>
+                                            <TableCell align={'right'}>{set.weight}</TableCell>
+                                            <TableCell align={'right'}>{set.reps}</TableCell>
+                                        </TableRow>
+                                    )
+                                }
                             })
                         }
 
@@ -120,7 +138,6 @@ export const WorkoutHistoryPage = () => {
 
     return (
         <Box className={'page-content'}>
-            <h2 className={'page-header'}>History</h2>
             <TableContainer >
                 <Table sx={{ minWidth: 375 }} size="small" aria-label="workout history">
                 { formatWorkoutHistory() }

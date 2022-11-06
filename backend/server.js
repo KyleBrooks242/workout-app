@@ -61,7 +61,7 @@ app.post('/login', async (req, res, next) => {
         });
     }
     catch (error) {
-        console.error(`Error in catch of login logic`);
+        console.error(`Error logging in!`);
         console.error(error);
         next(ApiError.internal('Something went wrong!'))
     }
@@ -92,10 +92,9 @@ app.post('/user',async (req, res, next) => {
             if (err) {
                 console.error('An error occurred hashing the password!');
                 console.error(err);
-                next(ApiError.internal('Error hashing password!'));
+                next(ApiError.internal('Something went wrong- Please try again!'));
             }
             else {
-                console.log(`Hashed pw: ${hash}`);
                 const user = await createUser(username, email, firstName, lastName, hash);
 
                 user.token = jwt.sign(
@@ -111,6 +110,7 @@ app.post('/user',async (req, res, next) => {
         });
     }
     catch (error) {
+        console.log()
         next(error);
     }
 });
@@ -123,61 +123,97 @@ app.use(verifyToken);
  * Get a list of exercise options for a given user
  **/
 app.get('/exercise-option', async (req, res, next) => {
-    console.log(`GET /exercise-option hit...`);
-    const result = await getExercisesByUser(req.user);
-    res.status(200).json(result);
+    try {
+        console.log(`GET /exercise-option hit...`);
+        const result = await getExercisesByUser(req.user);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in GET /exercise-option`);
+        next(ApiError.internal('Something went wrong!'));
+    }
 })
 
 app.post('/workout-category', async (req, res, next) => {
-    console.log(`POST /workout-category hit...`);
 
-    const category = req.body.data;
+    try {
+        console.log(`POST /workout-category hit...`);
 
-    const result = await addWorkoutCategory(req.user, category);
-    res.status(200).json(result);
+        const category = req.body.data;
+
+        const result = await addWorkoutCategory(req.user, category);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in POST /exercise-category`);
+        next(ApiError.internal('Something went wrong!'));
+    }
 })
 
 app.get('/workout-category', async (req, res, next) => {
-    console.log(`GET /workout-category hit...`);
-    const result = await getWorkoutCategoriesByUser(req.user);
-    res.status(200).json(result);
+    try {
+        console.log(`GET /workout-category hit...`);
+        const result = await getWorkoutCategoriesByUser(req.user);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in GET /workout-category`);
+        next(ApiError.internal('Something went wrong!'))
+    }
 })
 
 /**
  * Add an exercise
  **/
 app.post('/exercise', async (req, res, next) => {
-    console.log(`POST /exercise hit...`);
-    const rawData = req.body.data;
-    console.log(rawData);
+    try {
+        console.log(`POST /exercise hit...`);
+        const rawData = req.body.data;
+        console.log(rawData);
 
-    const username  = req.user
-    const exercise  = rawData.newExercise;
+        const username  = req.user
+        const exercise  = rawData.newExercise;
 
-    const result = await addExerciseOption(username, exercise);
-    res.status(200).json(result);
+        const result = await addExerciseOption(username, exercise);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in POST /exercise`);
+        next(ApiError.internal('Something went wrong!'));
+    }
 })
 
 app.put('/workout', async(req, res, next) => {
-    console.log(`PUT /workout hit...`);
+    try {
+        console.log(`PUT /workout hit...`);
 
-    const workout = req.body.data;
-    console.log(workout);
+        const workout = req.body.data;
+        console.log(`Workout...`);
+        console.log(workout);
+        const result = await upsertWorkout(req.user, workout);
 
-    const result = await upsertWorkout(req.user, workout);
-
-    res.status(200).json(result);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in PUT /workout`);
+        next(ApiError.internal('Something went wrong!'));
+    }
 
 })
 
 app.get('/workout', async(req, res, next) => {
-    console.log(`GET /workout hit...`);
+    try {
+        console.log(`GET /workout hit...`);
 
+        const result = await getWorkoutByUser(req.user);
+        console.log(result.docs);
 
-    const result = await getWorkoutByUser(req.user);
-    console.log(result.docs);
-
-    res.status(200).json(result);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in GET /workout`);
+        next(ApiError.internal('Something went wrong!'));
+    }
 
 })
 

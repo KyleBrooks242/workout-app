@@ -80,6 +80,7 @@ const addExerciseOption = async (user, exercise) => {
 }
 
 const getExercisesByUser = async (user) => {
+    console.log(`Fetching exercises for user ${user}`);
 
     const query = {
         selector: {
@@ -91,24 +92,23 @@ const getExercisesByUser = async (user) => {
         sort: [{"_id": "asc"}],
         limit: 100
     };
-    console.log(`Fetching exercises for user ${user}`);
     const result = await db.find(query);
     return result;
 }
 
 const getWorkoutCategoriesByUser = async (user) => {
+    console.log(`Fetching workout categories for user ${user}`);
 
     const query = {
         selector: {
             docType: { "$eq": "WORKOUT_CATEGORY"},
             userName: { "$eq": user },
-            exercise: { "$ne": null }
+            category: { "$ne": null }
         },
         fields: [ "category" ],
         sort: [{"_id": "asc"}],
         limit: 100
     };
-    console.log(`Fetching exercises for user ${user}`);
     const result = await db.find(query);
     return result;
 }
@@ -127,8 +127,6 @@ const addWorkoutCategory = async (user, category) => {
     return response;
 }
 
-//TODO.. we have a scenario where someone working out at midnight may end up with two workouts
-// We really need the workout to have a name given to it and associated for the duration
 const upsertWorkout = async (user, workout) => {
     const parsedWorkout = JSON.parse(workout);
 
@@ -143,9 +141,9 @@ const upsertWorkout = async (user, workout) => {
                     value: parsedWorkout.exerciseList,
                     workoutName: parsedWorkout.workoutName,
                     userName: user,
-                    date: date,
-                    // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
+                    category: parsedWorkout.category,
                     docType: 'WORKOUT',
+                    date: date,
                     _rev: res._rev
                 }
             )
@@ -174,11 +172,11 @@ const getWorkoutByUser = async (user) => {
             userName: { "$eq": user },
             value: { "$ne": null }
         },
-        fields: [ "value", "date", "workoutName" ],
+        fields: [ "value", "date", "workoutName", "category" ],
         sort: [{"date": "desc"}],
         limit: 100
     };
-    console.log(`Fetching exercises for user ${user}`);
+    console.log(`Fetching workouts for user ${user}`);
     const result = await db.find(query);
     return result;
 }

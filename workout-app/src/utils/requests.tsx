@@ -4,11 +4,12 @@ import { Exercise } from "../pages/NewWorkoutPage";
 
 //Is there a better way to do this, that does not rely on user hitting a button?
 //TODO if the user clicks away from this screen, we should save off data
-export const saveWorkoutRequest = async (exerciseList:Array<Exercise>, workoutName: string, token) => {
+export const saveWorkoutRequest = async (exerciseList:Array<Exercise>, workoutName: string, category: string, token) => {
 
     const data = {
         workoutName: workoutName,
-        exerciseList: exerciseList
+        exerciseList: exerciseList,
+        category: category
     }
     await axios.put(
         '/workout',
@@ -38,11 +39,10 @@ export const fetchCategoriesRequest = async (token) => {
         }
     )
         .then((resp : any) => {
-            const list: Array<string> = [];
+            console.log(resp);
             list.push('None');
-            list.push(...resp.data.docs);
+            resp.data.docs.map((doc : any) => { list.push(doc.category) });
             list.push('+ Add');
-            return list;
         })
         .catch(error => {
             console.error('Error fetching workout categories!');
