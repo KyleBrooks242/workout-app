@@ -9,32 +9,41 @@ $gray: #65655E;
   text-align: center;
 }
 
-.main-logo {
-  position: absolute;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  transform: translate(-50%, -50%);
+.menu-container {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
+
+//.main-logo {
+//  //position: absolute;
+//  //padding-top: .5rem;
+//  //padding-bottom: .5rem;
+//  //transform: translate(-50%, -50%);
+//}
 
 @media (min-width:768px) {
   .main-logo {
-    max-width: 100%;
-    max-height: 100%;
-    left: 50%;
+    max-width: 400px;
+    max-height: 75px;
   }
 }
 
 @media (max-width:767px) {
   .main-logo {
+    padding-right: 3rem;
+    padding-bottom: 1.5rem;
     max-width: 200px;
-    max-height: 46px;
-    left: 30%;
+    max-height: 50px;
+  }
+  .menu-icon {
+    padding-bottom: 1.5rem !important;
+    margin-bottom: .5rem !important;
   }
 }
 
 .App-header {
   background-color: white;
-  //min-height: 10vh;
   height: 6rem;
   display: flex;
   flex-direction: column;

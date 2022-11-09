@@ -19,7 +19,7 @@ function App() {
             <div className={"App"}>
                 <header className="App-header">
                     <MenuComponent
-                        isSignOutVisible={false}
+                        isSignedIn={false}
                         handleSignOut={deleteToken}/>
                 </header>
                 <LoginComponent setToken={setToken}/>
@@ -32,7 +32,7 @@ function App() {
             <div className="App">
               <header className="App-header">
                 <MenuComponent
-                    isSignOutVisible={true}
+                    isSignedIn={true}
                     handleSignOut={deleteToken}
                 />
               </header>

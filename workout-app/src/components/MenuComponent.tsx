@@ -1,31 +1,29 @@
 import React from 'react';
 import logo from '../logos/logo.png';
-import {Container, Button} from "@mui/material";
+import {Container, Button, Grid} from "@mui/material";
+import { MenuDropdownComponent } from "./MenuDropdownComponent";
 
 interface Props {
-    isSignOutVisible: boolean
+    isSignedIn: boolean
     handleSignOut: any
 }
 
 export const MenuComponent = (props: Props) => {
     return (
-        <Container sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1.5rem'}}>
+        <Container
+            className={'menu-container'}
+        >
             <img
                 src={logo}
                 alt={'Swole Nation'}
-                width={'400'}
-                height={'75'}
                 className={'main-logo'}
             />
-
             {
-                props.isSignOutVisible
+                props.isSignedIn
                     ?
-                    <Button
-                        className={'signout-button primary-button'}
-                        variant="contained"
-                        onClick={() => props.handleSignOut()}
-                    >Sign Out</Button>
+                    <MenuDropdownComponent
+                        handleSignOut={props.handleSignOut}
+                    />
                     :
                     null
             }
