@@ -133,6 +133,7 @@ const upsertWorkout = async (user, workout) => {
     const date = dayjs().format('YYYY-MM-DD');
     const id = `${user}_${parsedWorkout.workoutName}_${date}`
 
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     await db.get(id)
         .then(res => {
             return db.insert(
@@ -149,8 +150,12 @@ const upsertWorkout = async (user, workout) => {
             )
         })
         .catch((error) => {
-            console.log(error);
+            console.log('Error in catch block of upsert workout!');
             //If we don't find the document, no problem... insert as new!
+            if (error.statusCode !== 404) {
+                throw new Error('Something went wrong!');
+            }
+            console.log('Workout does not exist, inserting as new...')
             return db.insert(
                 {
                     _id: id,
@@ -158,7 +163,7 @@ const upsertWorkout = async (user, workout) => {
                     workoutName: parsedWorkout.workoutName,
                     userName: user,
                     date: date,
-                    // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
+                    category: parsedWorkout.category,
                     docType: 'WORKOUT'
                 }
             )
@@ -180,12 +185,6 @@ const getWorkoutByUser = async (user) => {
     const result = await db.find(query);
     return result;
 }
-
-//TODO helper function that will basically append all info needed to make a unique _id field and ensure consistency
-const formatIdValue = () => {
-
-}
-
 
 module.exports = {
     createUser,

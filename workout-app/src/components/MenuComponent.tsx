@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../logos/logo.png';
-import {Container, Button, Grid} from "@mui/material";
+import {Container, Button, Grid, Box} from "@mui/material";
 import { MenuDropdownComponent } from "./MenuDropdownComponent";
 
 interface Props {
@@ -16,14 +16,16 @@ export const MenuComponent = (props: Props) => {
             <img
                 src={logo}
                 alt={'Swole Nation'}
-                className={'main-logo'}
+                className={`main-logo ${props.isSignedIn ? 'off-center' : 'centered'}`}
             />
             {
                 props.isSignedIn
                     ?
-                    <MenuDropdownComponent
-                        handleSignOut={props.handleSignOut}
-                    />
+                    <Box className={'menu-icon'}>
+                        <MenuDropdownComponent
+                            handleSignOut={props.handleSignOut}
+                        />
+                    </Box>
                     :
                     null
             }

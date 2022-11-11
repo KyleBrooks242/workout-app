@@ -5,22 +5,19 @@ $secondary: #7fc4f1;
 $gray-blue: #EEF0F2;
 $gray: #65655E;
 
+$dark-grey: #232F34;
+
 .App {
   text-align: center;
+  //background-color: $dark-grey;
+  background-color: white;
 }
 
 .menu-container {
   display: flex !important;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
-
-//.main-logo {
-//  //position: absolute;
-//  //padding-top: .5rem;
-//  //padding-bottom: .5rem;
-//  //transform: translate(-50%, -50%);
-//}
 
 @media (min-width:768px) {
   .main-logo {
@@ -29,17 +26,21 @@ $gray: #65655E;
   }
 }
 
-@media (max-width:767px) {
+@media (min-width:300px) {
   .main-logo {
-    padding-right: 3rem;
-    padding-bottom: 1.5rem;
-    max-width: 200px;
-    max-height: 50px;
+    max-width: 225px;
+    max-height: 56px;
   }
-  .menu-icon {
-    padding-bottom: 1.5rem !important;
-    margin-bottom: .5rem !important;
-  }
+}
+
+.menu-icon {
+  margin-left: 1.5rem;
+}
+
+.profile-icon {
+  color: white;
+  background-color: black;
+  font-size: 48px !important;
 }
 
 .App-header {
@@ -51,6 +52,7 @@ $gray: #65655E;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-bottom: 1rem;
 }
 
 .content-wrapper {
@@ -69,7 +71,6 @@ $gray: #65655E;
     margin-top: 2rem !important;
     width: 10rem;
     height: 7rem;
-    //font-size: 1.5rem;
   }
 }
 
@@ -81,6 +82,8 @@ $gray: #65655E;
 .page-content {
   .page-header {
     margin-top: 0 !important;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   .exercise-title {
     text-transform: capitalize;
@@ -92,12 +95,6 @@ $gray: #65655E;
   .exercise-grid {
     padding-bottom: .5rem;
     width: 350px !important;
-    &.color-1 {
-      background-color: white;
-    }
-    &.color-0 {
-      background-color: white;
-    }
 
     .set-title {
       text-align: center;
@@ -158,4 +155,13 @@ $gray: #65655E;
 
 .table-record-row-1 {
   background-color: white;
+}
+
+.workout-history-item {
+  width: auto !important;
+  border: 1px solid $gray-blue;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }

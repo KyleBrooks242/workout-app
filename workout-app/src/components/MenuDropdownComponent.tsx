@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 interface Props {
     handleSignOut: any
@@ -25,14 +25,15 @@ export const MenuDropdownComponent = (props: Props) => {
     return (
         <React.Fragment>
             <IconButton
-                className={'menu-icon'}
                 onClick={handleClick}
                 size="small"
                 aria-controls={open ? 'account-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
             >
-                <Avatar sx={{ width: 48, height: 48 }}>M</Avatar>
+                <Avatar>
+                    <AccountCircleIcon className={'profile-icon'} />
+                </Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
