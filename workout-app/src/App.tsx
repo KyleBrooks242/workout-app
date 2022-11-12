@@ -17,11 +17,9 @@ function App() {
     if (!token) {
         return (
             <div className={"App"}>
-                <header className="App-header">
                     <MenuComponent
                         isSignedIn={false}
                         handleSignOut={deleteToken}/>
-                </header>
                 <LoginComponent setToken={setToken}/>
             </div>
         )
@@ -29,13 +27,11 @@ function App() {
 
     else {
         return (
-            <div >
-              <header className="App-header">
+            <div className={"App"}>
                 <MenuComponent
                     isSignedIn={true}
                     handleSignOut={deleteToken}
                 />
-              </header>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={ token
