@@ -17,6 +17,17 @@ const darkThemeOptions: ThemeOptions = {
             primary: '#fefefe',
         },
     },
+    //Use the following pattern to manually override components that do not conform to the theme
+    components: {
+        MuiFormControlLabel : {
+            styleOverrides: {
+                label: {
+                    color: '#fefefe',
+                },
+            }
+        }
+    }
+
 };
 
 export const darkTheme = createTheme(darkThemeOptions);

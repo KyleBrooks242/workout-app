@@ -161,7 +161,6 @@ export const LoginComponent = (props: Props) => {
 
             }
             <div className={'content-wrapper'}>
-                {/*<h2>Let's See Some Id</h2>*/}
 
 
                 <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
