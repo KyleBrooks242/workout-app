@@ -66,7 +66,7 @@ const getUser = async (user) => {
     return await db.get(user);
 }
 
-const addExercise = async (user, exercise) => {
+const addExerciseOption = async (user, exercise) => {
     //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     console.log('Inserting exercise...');
     const response = await db.insert({
@@ -80,6 +80,7 @@ const addExercise = async (user, exercise) => {
 }
 
 const getExercisesByUser = async (user) => {
+    console.log(`Fetching exercises for user ${user}`);
 
     const query = {
         selector: {
@@ -91,45 +92,78 @@ const getExercisesByUser = async (user) => {
         sort: [{"_id": "asc"}],
         limit: 100
     };
-    console.log(`Fetching exercises for user ${user}`);
     const result = await db.find(query);
     return result;
 }
 
-//TODO.. we have a scenario where someone working out at midnight may end up with two workouts
-// We really need the workout to have a name given to it and associated for the duration
-const upsertWorkout = async (user, workout) => {
+const getWorkoutCategoriesByUser = async (user) => {
+    console.log(`Fetching workout categories for user ${user}`);
 
+    const query = {
+        selector: {
+            docType: { "$eq": "WORKOUT_CATEGORY"},
+            userName: { "$eq": user },
+            category: { "$ne": null }
+        },
+        fields: [ "category" ],
+        sort: [{"_id": "asc"}],
+        limit: 100
+    };
+    const result = await db.find(query);
+    return result;
+}
+
+const addWorkoutCategory = async (user, category) => {
+
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
+    console.log('Inserting workout category...');
+    const response = await db.insert({
+        _id: `${user}_${category}`,
+        userName: user,
+        category: category,
+        docType: 'WORKOUT_CATEGORY'
+    });
+
+    return response;
+}
+
+const upsertWorkout = async (user, workout) => {
+    const parsedWorkout = JSON.parse(workout);
 
     const date = dayjs().format('YYYY-MM-DD');
-    const id = `${user}_workout_${date}`
+    const id = `${user}_${parsedWorkout.workoutName}_${date}`
 
+    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     await db.get(id)
         .then(res => {
             return db.insert(
                 {
                     _id: id,
-                    value: workout,
+                    value: parsedWorkout.exerciseList,
+                    workoutName: parsedWorkout.workoutName,
                     userName: user,
-                    date: date,
-                    // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
-                    // workoutName: workoutName If we decide to let user give a name their workouts..?
+                    category: parsedWorkout.category,
                     docType: 'WORKOUT',
+                    date: date,
                     _rev: res._rev
                 }
             )
         })
         .catch((error) => {
-            console.log(error);
-            //If we don't find the document, no problem.. insert as new!
+            console.log('Error in catch block of upsert workout!');
+            //If we don't find the document, no problem... insert as new!
+            if (error.statusCode !== 404) {
+                throw new Error('Something went wrong!');
+            }
+            console.log('Workout does not exist, inserting as new...')
             return db.insert(
                 {
                     _id: id,
-                    value: workout,
+                    value: parsedWorkout.exerciseList,
+                    workoutName: parsedWorkout.workoutName,
                     userName: user,
                     date: date,
-                    // category: category TODO add categories (chest, legs, etc.) to make it easier to filter later
-                    // workoutName: workoutName If we decide to let user give a name their workouts..?
+                    category: parsedWorkout.category,
                     docType: 'WORKOUT'
                 }
             )
@@ -143,27 +177,23 @@ const getWorkoutByUser = async (user) => {
             userName: { "$eq": user },
             value: { "$ne": null }
         },
-        fields: [ "value", "date" ],
+        fields: [ "value", "date", "workoutName", "category" ],
         sort: [{"date": "desc"}],
         limit: 100
     };
-    console.log(`Fetching exercises for user ${user}`);
+    console.log(`Fetching workouts for user ${user}`);
     const result = await db.find(query);
     return result;
 }
-
-//TODO helper function that will basically append all info needed to make a unique _id field and ensure consistency
-const formatIdValue = () => {
-
-}
-
 
 module.exports = {
     createUser,
     getUser,
     userExists,
     getExercisesByUser,
-    addExercise,
+    addExerciseOption,
     upsertWorkout,
-    getWorkoutByUser
+    getWorkoutByUser,
+    getWorkoutCategoriesByUser,
+    addWorkoutCategory
 };

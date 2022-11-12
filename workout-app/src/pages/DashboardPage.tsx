@@ -17,7 +17,7 @@ export const DashboardPage = () => {
                 <Grid2>
                     <Grid2>
                         <Button
-                            className={'dashboard-button'}
+                            className={'dashboard-button primary-outline-button'}
                             variant='outlined'
                             size='large'
                             onClick={() => goToPage('/new-workout')}
@@ -28,7 +28,7 @@ export const DashboardPage = () => {
                     {/* TODO Add button and/or dropdown for an existing workout template*/}
                     <Grid2>
                         <Button
-                            className={'dashboard-button'}
+                            className={'dashboard-button primary-outline-button'}
                             variant={'outlined'}
                             size={'large'}
                             onClick={() => goToPage('/workout-history')}

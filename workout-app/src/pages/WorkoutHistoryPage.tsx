@@ -4,9 +4,6 @@ import { useToken } from "../utils/useToken";
 import {
     Box,
     Button,
-    Divider,
-    Grid,
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -15,6 +12,7 @@ import {
     TableRow
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {WorkoutHistoryItemComponent} from "../components/WorkoutHistoryItemComponent";
 
 export const WorkoutHistoryPage = () => {
 
@@ -51,69 +49,21 @@ export const WorkoutHistoryPage = () => {
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, []);
 
-    const formatWorkoutHistory = () => {
-        const workoutList : any = [];
-        workouts.map((workout: any, i) => {
-            const parsedWorkout = JSON.parse(workout.value);
-            workoutList.push(
-                <TableHead key={`${i}-header`}>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell/>
-                        <TableCell/>
-                        <TableCell align={'right'}><b>{workout.date}</b></TableCell>
-                    </TableRow>
-                </TableHead>
-            )
-
-            parsedWorkout.map((exercise: any, j) => {
-                console.log("EXERCISE");
-                console.log(exercise);
-
-                workoutList.push(
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>{exercise.name}</TableCell>
-                            <TableCell/>
-                            <TableCell>Weight</TableCell>
-                            <TableCell>Reps</TableCell>
-                        </TableRow>
-                        {
-                            exercise.values.map((set, index) => {
-                                return (
-                                    <TableRow>
-                                        <TableCell align={'right'}>Set {index + 1}</TableCell>
-                                        <TableCell/>
-                                        <TableCell>{set.weight}</TableCell>
-                                        <TableCell>{set.reps}</TableCell>
-                                    </TableRow>
-                                )
-                            })
-                        }
-
-                    </TableBody>
-                )
-            })
+    const formatWorkoutItems = () => {
+        return workouts.map(workout => {
+            return <WorkoutHistoryItemComponent
+                workout={workout}
+            />
         })
-
-        return workoutList;
     }
 
-    // console.table(workouts);
-
     return (
-        <Box className={'new-exercise-page'}>
-            <h2>History</h2>
-            <Divider />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 375 }} size="small" aria-label="workout history">
-                { formatWorkoutHistory() }
-                </Table>
-            </TableContainer>
+        <Box className={'page-content'}>
+            { formatWorkoutItems() }
             <Button
-                className={'add-exercise-button'}
+                className={'add-exercise-button primary-outline-button'}
                 variant="outlined"
                 onClick={() => goToPage('/dashboard')}
             >

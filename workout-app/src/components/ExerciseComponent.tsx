@@ -38,7 +38,6 @@ export const ExerciseComponent = (props: Props) => {
                             placeholder="Weight"
                             autoComplete={'false'}
                             onChange={(event) => props.handleInput(event, i, exercise.index, 0)}
-                            // value={exercise.values[i].weight}
                         />
                         <OutlinedInput
                             sx={{ m: .5, width: '8ch' }}
@@ -47,8 +46,6 @@ export const ExerciseComponent = (props: Props) => {
                             placeholder="Reps"
                             autoComplete={'false'}
                             onChange={(event) => props.handleInput(event, i, exercise.index, 1)}
-                            // value={exercise.values[i].weight}
-
                         />
                     </Grid>
                 </div>

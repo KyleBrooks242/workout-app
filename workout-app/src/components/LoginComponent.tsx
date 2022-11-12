@@ -250,6 +250,7 @@ export const LoginComponent = (props: Props) => {
                 </FormControl>
 
                 <Button
+                    className={'primary-button'}
                     sx={{marginTop: '2rem'}}
                     variant='contained'
                     onClick={() => handleLoginOrCreateAccountClicked()}

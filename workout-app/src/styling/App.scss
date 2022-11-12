@@ -1,35 +1,50 @@
-$primary: #1976d2;
+//$primary: #1976d2;
+$primary: #35AFFC;
+$secondary: #7fc4f1;
+
+$gray-blue: #EEF0F2;
+$gray: #65655E;
+
+$dark-grey: #232F34;
 
 .App {
   text-align: center;
+  //background-color: $dark-grey;
+  background-color: white;
 }
 
-.main-logo {
-  position: absolute;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  transform: translate(-50%, -50%);
+.menu-container {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 @media (min-width:768px) {
   .main-logo {
-    max-width: 100%;
-    max-height: 100%;
-    left: 50%;
+    max-width: 400px;
+    max-height: 75px;
   }
 }
 
-@media (max-width:767px) {
+@media (min-width:300px) {
   .main-logo {
-    max-width: 200px;
-    max-height: 46px;
-    left: 30%;
+    max-width: 225px;
+    max-height: 56px;
   }
+}
+
+.menu-icon {
+  margin-left: 1.5rem;
+}
+
+.profile-icon {
+  color: white;
+  background-color: black;
+  font-size: 48px !important;
 }
 
 .App-header {
-  background-color:lightgrey;
-  //min-height: 10vh;
+  background-color: white;
   height: 6rem;
   display: flex;
   flex-direction: column;
@@ -37,6 +52,7 @@ $primary: #1976d2;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-bottom: 1rem;
 }
 
 .content-wrapper {
@@ -55,7 +71,6 @@ $primary: #1976d2;
     margin-top: 2rem !important;
     width: 10rem;
     height: 7rem;
-    //font-size: 1.5rem;
   }
 }
 
@@ -64,7 +79,12 @@ $primary: #1976d2;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.new-exercise-page {
+.page-content {
+  .page-header {
+    margin-top: 0 !important;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
   .exercise-title {
     text-transform: capitalize;
     text-align: start;
@@ -75,24 +95,18 @@ $primary: #1976d2;
   .exercise-grid {
     padding-bottom: .5rem;
     width: 350px !important;
-    &.color-1 {
-      background-color: white;
-    }
-    &.color-0 {
-      background-color: white;
-    }
 
     .set-title {
       text-align: center;
       font-weight: bold;
-      padding-left: 1rem;
-      padding-right: 2rem;
       margin-bottom: 0;
       margin-top: .5rem;
     }
-
   }
 
+  .workout-name {
+    margin-right: 1rem;
+  }
 }
 
 .exercise-dropdown {
@@ -109,4 +123,45 @@ $primary: #1976d2;
 .workout-history-date {
   text-align: end;
   padding-right: .5rem;
+}
+
+.primary-button {
+  background-color: $primary !important;
+}
+
+.primary-outline-button {
+  border-color: $primary !important;
+}
+
+.table-header-row {
+  background-color: $primary;
+  .MuiTableCell-root {
+    color: white;
+    border: 0 $primary !important;
+  }
+}
+
+.table-header-row-2 {
+  background-color: $secondary;
+  .MuiTableCell-root {
+    color: white;
+    border: 0 darkgray !important;
+  }
+}
+
+.table-record-row-0 {
+  background-color: $gray-blue;
+}
+
+.table-record-row-1 {
+  background-color: white;
+}
+
+.workout-history-item {
+  width: auto !important;
+  border: 1px solid $gray-blue;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
