@@ -34,7 +34,10 @@ export const MenuComponent = (props: Props) => {
         //     }
         // </header>
 
-        <AppBar position="static">
+        <AppBar
+            position={'static'}
+            enableColorOnDark={true}
+        >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

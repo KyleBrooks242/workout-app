@@ -1,20 +1,29 @@
 import {createTheme, ThemeOptions} from '@mui/material/styles'
 
+// const primaryMain = '#FFAB40';
+const primaryMain= '#9CCC65';
+const secondaryMain = '#9CCC65';
+
+const backgroundPaper = '#424B37';
+const backgroundDefault = '#303030';
+
+const textPrimary = '#FEFEFE';
+
 const darkThemeOptions: ThemeOptions = {
     palette: {
         mode: 'dark',
         primary: {
-            main: '#ffab40',
+            main: primaryMain,
         },
         secondary: {
-            main: '#9ccc65',
+            main: secondaryMain,
         },
         background: {
-            paper: '#424b37',
-            default: '#303030',
+            paper: backgroundPaper,
+            default: backgroundDefault,
         },
         text: {
-            primary: '#fefefe',
+            primary: textPrimary,
         },
     },
     //Use the following pattern to manually override components that do not conform to the theme
@@ -22,10 +31,11 @@ const darkThemeOptions: ThemeOptions = {
         MuiFormControlLabel : {
             styleOverrides: {
                 label: {
-                    color: '#fefefe',
+                    color: textPrimary,
                 },
             }
-        }
+        },
+
     }
 
 };

@@ -30,7 +30,6 @@ export const saveWorkoutRequest = async (exerciseList:Array<Exercise>, workoutNa
 }
 
 export const fetchCategoriesRequest = async (token) => {
-    console.log('Fetching workout categories...')
     let list: Array<string> = [];
     await axios.get(
         `/workout-category`,
@@ -39,7 +38,6 @@ export const fetchCategoriesRequest = async (token) => {
         }
     )
         .then((resp : any) => {
-            console.log(resp);
             list.push('None');
             resp.data.docs.map((doc : any) => { list.push(doc.category) });
             list.push('+ Add');
@@ -52,7 +50,6 @@ export const fetchCategoriesRequest = async (token) => {
 }
 
 export const fetchExercisesRequest = async (token) => {
-    console.log("Fetching exercise options...");
     let list: Array<string> = []
     await axios.get(
         `/exercise-option`,
