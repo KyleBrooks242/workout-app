@@ -1,9 +1,8 @@
 import {createTheme, ThemeOptions} from '@mui/material/styles'
 
-// const primaryMain = '#FFAB40';
-// const primaryMain= '#9CCC65';
-const secondaryMain = '#dcedc8';
-const primaryMain = '#9CCC65';
+const primaryMain = '#ffab40';
+
+const secondaryMain = '#7cb342';
 
 const backgroundPaper = '#424B37';
 

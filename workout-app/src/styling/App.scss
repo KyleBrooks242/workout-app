@@ -57,9 +57,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 8rem;
+  width: 16rem;
   height: 4rem;
-  border-radius: 2rem !important;
+  //border-radius: 2rem !important;
   margin-top: 1rem;
   margin-bottom: 1rem;
 
@@ -100,13 +100,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.page-content {
-  .page-header {
-    margin-top: 0 !important;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-}
 
 .exercise-dropdown {
   margin-top: 1rem !important;
@@ -146,13 +139,4 @@
 
 .table-record-row-1 {
   //background-color: white;
-}
-
-.workout-history-item {
-  width: auto !important;
-  //border: 1px solid $gray-blue;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
