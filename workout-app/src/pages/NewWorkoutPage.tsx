@@ -179,27 +179,26 @@ export const NewWorkoutPage = () => {
                             raised={true}
                         >
                             <CardContent>
-                                <Grid>
-                                    <Input
-                                        className={'workout-title'}
-                                        placeholder={'Workout Title...'}
-                                        onChange={(event) => handleChange(event, 'workoutName')}
-                                    />
-                                    <FormControl
-                                        size={'small'}
+                                <Input
+                                    className={'workout-title'}
+                                    placeholder={'Workout Title...'}
+                                    onChange={(event) => handleChange(event, 'workoutName')}
+                                />
+                                <FormControl
+                                    className={'workout-category-select'}
+                                    size={'small'}
+                                >
+                                    <InputLabel id="category-label">Category</InputLabel>
+                                    <Select
+                                        labelId="set-label"
+                                        id="category-dropdown"
+                                        value={values.category}
+                                        label="Category"
+                                        onChange={(event) => handleChange(event, 'category')}
                                     >
-                                        <InputLabel id="category-label">Category</InputLabel>
-                                        <Select
-                                            labelId="set-label"
-                                            id="category-dropdown"
-                                            value={values.category}
-                                            label="Category"
-                                            onChange={(event) => handleChange(event, 'category')}
-                                        >
-                                            { renderDropdownOptions(dropdownWorkoutCategories)}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
+                                        { renderDropdownOptions(dropdownWorkoutCategories)}
+                                    </Select>
+                                </FormControl>
                             </CardContent>
                         </Card>
                         <Grid>
