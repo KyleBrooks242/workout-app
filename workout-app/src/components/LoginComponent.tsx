@@ -164,11 +164,11 @@ export const LoginComponent = (props: Props) => {
                 </Box>
 
                 <Paper>
-                    <Box className={'content-wrapper'}>
+                    <Box className={'content-wrapper login-page'}>
 
                         <FormControlLabel control={<Checkbox/>} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
 
-                        <FormControl sx={{ m: 1}} variant="standard">
+                        <FormControl fullWidth sx={{ m: 1}} variant="standard">
                             <InputLabel htmlFor="username">
                                 Username
                             </InputLabel>
@@ -184,7 +184,7 @@ export const LoginComponent = (props: Props) => {
 
                             <React.Fragment>
 
-                                <FormControl sx={{ m: 1}} variant="standard">
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="firstName">
                                         First Name
                                     </InputLabel>
@@ -195,7 +195,7 @@ export const LoginComponent = (props: Props) => {
                                     />
                                 </FormControl>
 
-                                <FormControl sx={{ m: 1}} variant="standard">
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="lastName">
                                         Last Name
                                     </InputLabel>
@@ -206,7 +206,7 @@ export const LoginComponent = (props: Props) => {
                                     />
                                 </FormControl>
 
-                                <FormControl sx={{ m: 1}} variant="standard">
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="email">
                                         Email
                                     </InputLabel>
@@ -219,7 +219,7 @@ export const LoginComponent = (props: Props) => {
                             </React.Fragment>
                         }
 
-                        <FormControl sx={{ m: 1}} variant="standard">
+                        <FormControl fullWidth sx={{ m: 1}} variant="standard">
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <Input
                                 error={errors.password}
