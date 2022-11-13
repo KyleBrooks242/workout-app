@@ -164,22 +164,17 @@ export const LoginComponent = (props: Props) => {
                 </Box>
 
                 <Paper>
-                    <Box className={'content-wrapper dashboard'}>
+                    <Box className={'content-wrapper'}>
 
-                        <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
+                        <FormControlLabel control={<Checkbox/>} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
 
-                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                        <FormControl sx={{ m: 1}} variant="standard">
                             <InputLabel htmlFor="username">
                                 Username
                             </InputLabel>
                             <Input
                                 error={errors.username}
                                 id="username"
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                }
                                 onChange={handleChange('username')}
                             />
                         </FormControl>
@@ -187,9 +182,9 @@ export const LoginComponent = (props: Props) => {
                         {
                             values.createAccount &&
 
-                            <div>
+                            <React.Fragment>
 
-                                <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                                <FormControl sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="firstName">
                                         First Name
                                     </InputLabel>
@@ -200,7 +195,7 @@ export const LoginComponent = (props: Props) => {
                                     />
                                 </FormControl>
 
-                                <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                                <FormControl sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="lastName">
                                         Last Name
                                     </InputLabel>
@@ -211,25 +206,20 @@ export const LoginComponent = (props: Props) => {
                                     />
                                 </FormControl>
 
-                                <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                                <FormControl sx={{ m: 1}} variant="standard">
                                     <InputLabel htmlFor="email">
                                         Email
                                     </InputLabel>
                                     <Input
                                         error={errors.email}
                                         id="email"
-                                        startAdornment={
-                                            <InputAdornment position="start">
-                                                <EmailRounded />
-                                            </InputAdornment>
-                                        }
                                         onChange={handleChange('email')}
                                     />
                                 </FormControl>
-                            </div>
+                            </React.Fragment>
                         }
 
-                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+                        <FormControl sx={{ m: 1}} variant="standard">
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <Input
                                 error={errors.password}

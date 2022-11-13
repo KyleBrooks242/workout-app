@@ -4,6 +4,7 @@ import { useToken } from "../utils/useToken";
 import {
     Box,
     Button,
+    Container, Paper,
     Table,
     TableBody,
     TableCell,
@@ -52,24 +53,30 @@ export const WorkoutHistoryPage = () => {
     }, []);
 
     const formatWorkoutItems = () => {
-        return workouts.map(workout => {
-            return <WorkoutHistoryItemComponent
-                workout={workout}
-            />
+        return workouts.map((workout, i) => {
+            return (
+                <div key={i}>
+                   <WorkoutHistoryItemComponent workout={workout}/>
+                </div>
+            )
         })
     }
 
     return (
-        <Box className={'page-content'}>
-            { formatWorkoutItems() }
-            <Button
-                className={'add-exercise-button primary-outline-button'}
-                variant="outlined"
-                onClick={() => goToPage('/dashboard')}
-            >
-                Home
-            </Button>
-        </Box>
+        <Container>
+            <Paper>
+                <Box className={'page-content'}>
+                    { formatWorkoutItems() }
+                    <Button
+                        className={'add-exercise-button primary-outline-button'}
+                        variant="outlined"
+                        onClick={() => goToPage('/dashboard')}
+                    >
+                        Home
+                    </Button>
+                </Box>
+            </Paper>
+        </Container>
     )
 
 }

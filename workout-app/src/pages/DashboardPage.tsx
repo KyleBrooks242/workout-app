@@ -1,6 +1,5 @@
 import React from 'react';
 import {Box, Card, CardContent, CardHeader, CardMedia, Container, Paper} from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import HistoryIcon from '@mui/icons-material/History';
 import { useNavigate } from 'react-router-dom';
@@ -16,11 +15,11 @@ export const DashboardPage = () => {
     return (
         <Container>
             <Paper>
-                <Box className={'content-wrapper dashboard'}>
+                <Box className={'content-wrapper dashboard-page'}>
                     <Card
+                        className={'dashboard-card'}
                         variant={'outlined'}
                         onClick={() => goToPage('/new-workout')}
-                        className={'dashboard-card'}
                     >
                         <CardHeader
                             title={'New'}
@@ -31,9 +30,9 @@ export const DashboardPage = () => {
                     </Card>
 
                     <Card
+                        className={'dashboard-card'}
                         variant={'outlined'}
                         onClick={() => goToPage('/workout-history')}
-                        className={'dashboard-card'}
                     >
                         <CardHeader
                             title={'History'}

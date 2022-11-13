@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container, FormControl, Grid, Input, InputLabel, MenuItem, Paper, TextField} from "@mui/material";
+import {
+    Box,
+    Button,
+    Card, CardContent,
+    Container,
+    FormControl,
+    Grid,
+    Input,
+    InputLabel,
+    MenuItem,
+    Paper,
+} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddExerciseDialog} from "../components/AddExerciseDialog";
 import {useToken} from "../utils/useToken";
@@ -139,7 +150,7 @@ export const NewWorkoutPage = () => {
 
     return (
         <Container>
-            <Paper>
+            {/*<Paper>*/}
                 <Box className={'content-wrapper new-workout-page'}>
 
                     {/*-----------------------Workout Category Dialog------------------------------*/}
@@ -164,27 +175,33 @@ export const NewWorkoutPage = () => {
 
                     {/*-----------------------Main Inputs------------------------------*/}
                     <Grid>
-                        <Grid>
-                            <Input
-                                className={'workout-title'}
-                                placeholder={'Workout Title...'}
-                                onChange={(event) => handleChange(event, 'workoutName')}
-                            />
-                            <FormControl
-                                size={'small'}
-                            >
-                                <InputLabel id="category-label">Category</InputLabel>
-                                <Select
-                                    labelId="set-label"
-                                    id="category-dropdown"
-                                    value={values.category}
-                                    label="Category"
-                                    onChange={(event) => handleChange(event, 'category')}
-                                >
-                                    { renderDropdownOptions(dropdownWorkoutCategories)}
-                                </Select>
-                            </FormControl>
-                        </Grid>
+                        <Card
+                            raised={true}
+                        >
+                            <CardContent>
+                                <Grid>
+                                    <Input
+                                        className={'workout-title'}
+                                        placeholder={'Workout Title...'}
+                                        onChange={(event) => handleChange(event, 'workoutName')}
+                                    />
+                                    <FormControl
+                                        size={'small'}
+                                    >
+                                        <InputLabel id="category-label">Category</InputLabel>
+                                        <Select
+                                            labelId="set-label"
+                                            id="category-dropdown"
+                                            value={values.category}
+                                            label="Category"
+                                            onChange={(event) => handleChange(event, 'category')}
+                                        >
+                                            { renderDropdownOptions(dropdownWorkoutCategories)}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </CardContent>
+                        </Card>
                         <Grid>
                             {/*-----------------------Exercises------------------------------*/}
                             { exerciseList ? renderExercises() : null }
@@ -220,7 +237,7 @@ export const NewWorkoutPage = () => {
                         </Grid>
                     </Grid>
                 </Box>
-            </Paper>
+            {/*</Paper>*/}
         </Container>
     )
 

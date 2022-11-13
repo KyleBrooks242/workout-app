@@ -1,13 +1,16 @@
 import {createTheme, ThemeOptions} from '@mui/material/styles'
 
 // const primaryMain = '#FFAB40';
-const primaryMain= '#9CCC65';
-const secondaryMain = '#9CCC65';
+// const primaryMain= '#9CCC65';
+const secondaryMain = '#dcedc8';
+const primaryMain = '#9CCC65';
 
 const backgroundPaper = '#424B37';
+
 const backgroundDefault = '#303030';
 
 const textPrimary = '#FEFEFE';
+const textSecondary = '#0F0F0F';
 
 const darkThemeOptions: ThemeOptions = {
     palette: {
@@ -24,6 +27,7 @@ const darkThemeOptions: ThemeOptions = {
         },
         text: {
             primary: textPrimary,
+            // secondary: textSecondary,
         },
     },
     //Use the following pattern to manually override components that do not conform to the theme
@@ -35,6 +39,13 @@ const darkThemeOptions: ThemeOptions = {
                 },
             }
         },
+        // MuiCardHeader : {
+        //     styleOverrides: {
+        //         title: {
+        //             color: textSecondary
+        //         }
+        //     }
+        // }
 
     }
 
