@@ -2,6 +2,7 @@ import React from 'react';
 import logo from '../logos/logo.png';
 import {Container, Box, AppBar, Toolbar, Typography} from "@mui/material";
 import { MenuDropdownComponent } from "./MenuDropdownComponent";
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 interface Props {
     isSignedIn: boolean
@@ -40,7 +41,7 @@ export const MenuComponent = (props: Props) => {
         >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <FitnessCenterIcon sx={{ display: 'flex', mr: 1, fontSize:'2rem' }} />
                     <Typography
                         variant="h6"
                         noWrap

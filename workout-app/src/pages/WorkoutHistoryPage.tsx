@@ -57,13 +57,6 @@ export const WorkoutHistoryPage = () => {
 
     return (
         <Container>
-            {/*<Button*/}
-            {/*    sx={{marginTop: 2}}*/}
-            {/*    variant="outlined"*/}
-            {/*    onClick={() => goToPage('/dashboard')}*/}
-            {/*>*/}
-            {/*    Home*/}
-            {/*</Button>*/}
             <Box className={'content-wrapper'}>
                 { formatWorkoutItems() }
             </Box>
