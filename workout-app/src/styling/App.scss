@@ -100,8 +100,13 @@
   margin-bottom: .5rem;
 
   .exercise-card-header {
-    text-align: start !important;
-    padding-bottom: 0;
+    &.light-theme {
+      //background-color: #DBC545;
+    }
+
+    &.dark-theme {
+      //background-color:#DBC545;
+    }
   }
 
   .exercise-card-content {
@@ -133,31 +138,25 @@
   margin-left: .5rem !important;
 }
 
-.workout-history-date {
-  text-align: end;
-  padding-right: .5rem;
-}
-
 .table-header-row {
-  //background-color: $primary;
   .MuiTableCell-root {
     //color: white;
-    //border: 0 $primary !important;
+    border: 0 !important;
   }
 }
 
-.table-header-row-2 {
-  //background-color: $secondary;
-  //.MuiTableCell-root {
-  //  color: white;
-  //  border: 0 darkgray !important;
-  //}
+.table-header-row {
+  &.light-theme {
+    background-color: #759FBC;
+  }
+
+  &.dark-theme {
+    background-color: #c8b33f;
+  }
 }
 
-.table-record-row-0 {
-  //background-color: $gray-blue;
-}
-
-.table-record-row-1 {
-  //background-color: white;
+.table-record-row {
+ .history-record-cell {
+   border: 0;
+ }
 }

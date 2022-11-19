@@ -47,7 +47,8 @@ const lightThemeOptions: ThemeOptions = {
 
 const primaryMainDark = '#DBC545';
 
-const secondaryMainDark = '#759FBC';
+// const secondaryMainDark = '#759FBC';
+const secondaryMainDark = '#c8b33f';
 
 const backgroundPaperDark = '#3A4C47';
 

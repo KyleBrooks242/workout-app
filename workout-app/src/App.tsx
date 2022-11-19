@@ -3,23 +3,19 @@ import './styling/App.scss';
 import { lightTheme, darkTheme} from "./styling/theme";
 import { LoginComponent } from "./components/LoginComponent";
 import { MenuComponent } from "./components/MenuComponent";
-import {BrowserRouter, Routes, Route, Navigate, useNavigate} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { DashboardPage } from './pages/DashboardPage';
 import { PreferencesComponent } from './components/PreferencesComponent';
 import { useToken } from "./utils/useToken";
 import {NewWorkoutPage} from "./pages/NewWorkoutPage";
 import {WorkoutHistoryPage} from "./pages/WorkoutHistoryPage";
 import {ThemeProvider} from "@mui/material";
-import { useTheme } from "./utils/useTheme";
+import { useCustomThemeHook } from "./utils/useCustomThemeHook";
 
 function App() {
 
     const { token, setToken, deleteToken } = useToken();
-    const { isDarkTheme, setTheme } = useTheme();
-
-
-    useEffect(() => {
-    }, [isDarkTheme])
+    const { isDarkTheme, setTheme } = useCustomThemeHook();
 
     if (!token) {
         return (

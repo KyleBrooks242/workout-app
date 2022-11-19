@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const THEME_KEY = 'isDarkTheme';
 
-export const useTheme = () => {
+export const useCustomThemeHook = () => {
 
     const getTheme = () => {
         const isDarkTheme = localStorage.getItem(THEME_KEY);
@@ -12,8 +12,8 @@ export const useTheme = () => {
     const [isDarkTheme, setIsDarkTheme] = useState<boolean>(getTheme());
 
     const saveTheme = (isDarkTheme: boolean) => {
-        localStorage.setItem(THEME_KEY, isDarkTheme.toString());
         setIsDarkTheme(isDarkTheme);
+        localStorage.setItem(THEME_KEY, isDarkTheme.toString());
     };
 
     const deleteTheme = () => {

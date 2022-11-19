@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import { useToken } from "../utils/useToken";
 import {
-    Box, Button,
-    Container, FormControl, InputLabel, MenuItem,
+    Box, Button, Card, CardContent, CardHeader,
+    Container, FormControl, InputLabel, MenuItem, Table, TableBody, TableContainer,
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {WorkoutHistoryItemComponent} from "../components/WorkoutHistoryItemComponent";
@@ -25,7 +25,6 @@ export const WorkoutHistoryPage = () => {
 
 
     const fetchWorkoutHistory = async () => {
-        console.log("Fetching workout history...");
         await axios.get(
             `/workout`,
             {
@@ -77,21 +76,31 @@ export const WorkoutHistoryPage = () => {
     return (
         <Container>
             <Box className={'content-wrapper'}>
-                <FormControl
-                    className={'workout-category-select'}
-                    size={'small'}
+
+                <Card
+                    className={'exercise-card'}
+                    raised={true}
                 >
-                    <InputLabel id="category-label">Category</InputLabel>
-                    <Select
-                        labelId="set-label"
-                        id="category-dropdown"
-                        value={selectedCategory}
-                        label="Category"
-                        onChange={(event) => setSelectedCategory(event.target.value)}
-                    >
-                        { renderCategoryOptions(categories)}
-                    </Select>
-                </FormControl>
+                    <CardContent>
+                        <FormControl
+                            fullWidth
+                            size={'small'}
+                        >
+                            <InputLabel id="category-label">Category</InputLabel>
+                            <Select
+                                labelId="set-label"
+                                id="category-dropdown"
+                                value={selectedCategory}
+                                label="Category"
+                                onChange={(event) => setSelectedCategory(event.target.value)}
+                            >
+                                { renderCategoryOptions(categories)}
+                            </Select>
+                        </FormControl>
+                    </CardContent>
+                </Card>
+
+
                 { formatWorkoutItems() }
             </Box>
             <Button
