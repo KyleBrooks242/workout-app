@@ -1,10 +1,16 @@
 .App {
   text-align: center;
-  //background-color: #303030;
-  background-color: #424B37;
   overflow: auto;
   background-size: cover;
   min-height: 100vh;
+
+  &.dark-theme {
+    background-color: #424B37;
+  }
+
+  &.light-theme {
+    background-color: #CFD3D7;
+  }
 }
 
 .menu-container {
@@ -67,6 +73,14 @@
     color: #0F0F0F;
   }
   .dashboard-card-text {
+    color: #0F0F0F;
+  }
+
+  .dashboard-card-icon-light {
+    font-size: 7rem;
+    color: #0F0F0F;
+  }
+  .dashboard-card-text-light {
     color: #0F0F0F;
   }
 

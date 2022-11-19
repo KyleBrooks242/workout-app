@@ -8,13 +8,19 @@ import IconButton from '@mui/material/IconButton';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {FormControlLabel, Switch} from "@mui/material";
+import {useTheme} from "../utils/useTheme";
+import {useState} from "react";
 
 interface Props {
     handleSignOut: any
+    handleTheme: any
 }
 
 export const MenuDropdownComponent = (props: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { isDarkTheme } = useTheme();
+    const [isDarkThemeChecked, setIsDarkThemeChecked] = useState(isDarkTheme);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -22,6 +28,9 @@ export const MenuDropdownComponent = (props: Props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+
+
     return (
         <React.Fragment>
             <IconButton
@@ -81,6 +90,20 @@ export const MenuDropdownComponent = (props: Props) => {
                         <Settings fontSize="small" />
                     </ListItemIcon>
                     Settings
+                </MenuItem>
+                <MenuItem>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isDarkThemeChecked}
+                                onChange={(event) => {
+                                    setIsDarkThemeChecked(event.target.checked)
+                                    props.handleTheme(event.target.checked)}
+                            }
+                            />
+                        }
+                        label="Dark Mode"
+                    />
                 </MenuItem>
                 <MenuItem
                     onClick={props.handleSignOut}

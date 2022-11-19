@@ -7,6 +7,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 interface Props {
     isSignedIn: boolean
     handleSignOut: any
+    handleTheme: any
 }
 
 function AdbIcon(props: { sx: { mr: number; display: { md: string; xs: string } } }) {
@@ -133,6 +134,7 @@ export const MenuComponent = (props: Props) => {
                             props.isSignedIn &&
                             <MenuDropdownComponent
                                 handleSignOut={props.handleSignOut}
+                                handleTheme={props.handleTheme}
                             />
 
                         }

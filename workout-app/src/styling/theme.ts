@@ -1,50 +1,34 @@
 import {createTheme, ThemeOptions} from '@mui/material/styles'
 
-//TODO KEEP OIRGINAL DARK THEME
-// // const primaryMain = '#ffab40';
-// const primaryMain = '#DC965A';
-//
-// // const secondaryMain = '#7cb342';
-// const secondaryMain= '#BBB891';
-//
-// const backgroundPaper = '#424B37';
-//
-// const backgroundDefault = '#303030';
-//
-// const textPrimary = '#FEFEFE';
-// const textSecondary = '#0F0F0F';
+const primaryMainLight = '#7dbae5';
+// const primaryMainLight = '#004170';
 
-// const primaryMain = '#DBC545';
-const primaryMain = '#759FBC';
+const secondaryMainLight = '#759FBC';
 
-const secondaryMain = '#759FBC';
-// const secondaryMain= '#DBC545';
+const backgroundPaperLight = '#7F8B93';
+// const backgroundPaperLight = '#7dbae5'
 
-const backgroundPaper = '#3A4C47';
-// const backgroundPaper = '#E9E4DA'
+const backgroundDefaultLight = '#FEFEFE';
 
-const backgroundDefault = '#B4C086';
-// const backgroundDefault = '#E9E4DA';
+const textPrimaryLight = '#FEFEFE';
+const textSecondaryLight = '#FEFEFE';
 
-const textPrimary = '#FEFEFE';
-const textSecondary = '#0F0F0F';
-
-const darkThemeOptions: ThemeOptions = {
+const lightThemeOptions: ThemeOptions = {
     palette: {
-        mode: 'dark',
+        mode: 'light',
         primary: {
-            main: primaryMain,
+            main: primaryMainLight,
         },
         secondary: {
-            main: secondaryMain,
+            main: secondaryMainLight,
         },
         background: {
-            paper: backgroundPaper,
-            default: backgroundDefault,
+            paper: backgroundPaperLight,
+            default: backgroundDefaultLight,
         },
         text: {
-            primary: textPrimary,
-            // secondary: textSecondary,
+            primary: textPrimaryLight,
+            secondary: textSecondaryLight,
         },
     },
     //Use the following pattern to manually override components that do not conform to the theme
@@ -52,20 +36,57 @@ const darkThemeOptions: ThemeOptions = {
         MuiFormControlLabel : {
             styleOverrides: {
                 label: {
-                    color: textPrimary,
+                    color: textPrimaryLight,
                 },
             }
         },
-        // MuiCardHeader : {
-        //     styleOverrides: {
-        //         title: {
-        //             color: textSecondary
-        //         }
-        //     }
-        // }
-
     }
-
 };
 
+
+const primaryMainDark = '#DBC545';
+
+const secondaryMainDark = '#759FBC';
+
+const backgroundPaperDark = '#3A4C47';
+
+const backgroundDefaultDark = '#424B37';
+
+const textPrimaryDark = '#FEFEFE';
+const textSecondaryDark = '#0F0F0F';
+
+const darkThemeOptions: ThemeOptions = {
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: primaryMainDark,
+        },
+        secondary: {
+            main: secondaryMainDark,
+        },
+        background: {
+            paper: backgroundPaperDark,
+            default: backgroundDefaultDark,
+        },
+        text: {
+            primary: textPrimaryDark,
+            // secondary: textSecondaryDark,
+        },
+    },
+    //Use the following pattern to manually override components that do not conform to the theme
+    components: {
+        MuiFormControlLabel : {
+            styleOverrides: {
+                label: {
+                    color: textPrimaryDark,
+                },
+            }
+        },
+    }
+};
+
+export const lightTheme = createTheme(lightThemeOptions);
+
 export const darkTheme = createTheme(darkThemeOptions);
+
+
