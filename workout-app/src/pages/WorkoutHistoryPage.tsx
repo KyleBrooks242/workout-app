@@ -62,7 +62,7 @@ export const WorkoutHistoryPage = () => {
             </Box>
             <Button
                 sx={{marginBottom: '1rem', marginTop: '.5rem'}}
-                variant="outlined"
+                variant="contained"
                 onClick={() => goToPage('/dashboard')}
             >
                 Home

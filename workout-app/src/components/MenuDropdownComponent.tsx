@@ -82,10 +82,6 @@ export const MenuDropdownComponent = (props: Props) => {
                     <Avatar /> Profile
                 </MenuItem>
                 <MenuItem>
-                    <Avatar /> My account
-                </MenuItem>
-                <Divider />
-                <MenuItem>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
@@ -105,6 +101,7 @@ export const MenuDropdownComponent = (props: Props) => {
                         label="Dark Mode"
                     />
                 </MenuItem>
+                <Divider />
                 <MenuItem
                     onClick={props.handleSignOut}
                 >

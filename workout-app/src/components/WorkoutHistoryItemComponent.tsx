@@ -74,16 +74,6 @@ export const WorkoutHistoryItemComponent = (props: Props) => {
             <CardContent>
                 <TableContainer className={'workout-history-item'}>
                     <Table size="small" aria-label="workout history">
-                        {/*<TableHead key={`${workout.workoutName}-header`}>*/}
-                        {/*    <TableRow*/}
-                        {/*        key={`${workout.workoutName}-row`}*/}
-                        {/*        className={'table-header-row'}*/}
-                        {/*    >*/}
-                        {/*        <TableCell><b>{formatWorkoutName(workout.workoutName)}</b></TableCell>*/}
-                        {/*        <TableCell align={'center'}><b>{workout.category}</b></TableCell>*/}
-                        {/*        <TableCell align={'right'}><b>{workout.date}</b></TableCell>*/}
-                        {/*    </TableRow>*/}
-                        {/*</TableHead>*/}
                         { formatWorkoutHistory() }
                     </Table>
                 </TableContainer>

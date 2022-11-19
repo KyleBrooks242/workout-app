@@ -97,7 +97,12 @@ export const MenuComponent = (props: Props) => {
                         {/*    ))}*/}
                         {/*</Menu>*/}
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                    <AdbIcon
+                        sx={{
+                            display: { xs: 'flex', md: 'none'},
+                            mr: 1,
+                        }}
+                    />
                     <Typography
                         variant="h5"
                         noWrap
@@ -110,6 +115,7 @@ export const MenuComponent = (props: Props) => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
+                            // color: '#FEFEFE',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}

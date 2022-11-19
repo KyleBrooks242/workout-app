@@ -1,17 +1,18 @@
 import {createTheme, ThemeOptions} from '@mui/material/styles'
 
 const primaryMainLight = '#7dbae5';
-// const primaryMainLight = '#004170';
 
 const secondaryMainLight = '#759FBC';
 
-const backgroundPaperLight = '#7F8B93';
-// const backgroundPaperLight = '#7dbae5'
+// const backgroundPaperLight = '#7F8B93';
+const backgroundPaperLight = '#bfc5c9';
 
 const backgroundDefaultLight = '#FEFEFE';
 
-const textPrimaryLight = '#FEFEFE';
-const textSecondaryLight = '#FEFEFE';
+// const textPrimaryLight = '#FEFEFE';
+// const textSecondaryLight = '#FEFEFE';
+const textPrimaryLight = '#0F0F0F';
+const textSecondaryLight = '#0F0F0F';
 
 const lightThemeOptions: ThemeOptions = {
     palette: {
