@@ -3,10 +3,11 @@ import axios from "axios";
 import { useToken } from "../utils/useToken";
 import {
     Box, Button,
-    Container,
+    Container, FormControl, InputLabel, MenuItem,
 } from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {WorkoutHistoryItemComponent} from "../components/WorkoutHistoryItemComponent";
+import Select from "@mui/material/Select";
 
 export const WorkoutHistoryPage = () => {
 
@@ -18,6 +19,9 @@ export const WorkoutHistoryPage = () => {
     }
 
     const [workouts, setWorkouts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('ALL');
+    const [categories, setCategories] = useState(['ALL']);
+
 
 
     const fetchWorkoutHistory = async () => {
@@ -30,6 +34,9 @@ export const WorkoutHistoryPage = () => {
         )
             .then((resp : any) => {
                 setWorkouts(resp.data.docs);
+                const categories: Array<string> = resp.data.docs.map(workout => { return workout.category });
+                const uniqueCategories: any = ['ALL', ...new Set(categories)];
+                setCategories(uniqueCategories);
 
             })
             .catch(error => {
@@ -45,8 +52,14 @@ export const WorkoutHistoryPage = () => {
             })
     }, []);
 
+
     const formatWorkoutItems = () => {
-        return workouts.map((workout, i) => {
+        const filteredWorkouts = workouts.filter((workout: any) => {
+            return workout.category === selectedCategory || selectedCategory === 'ALL'
+        })
+
+        return filteredWorkouts.map((workout, i) => {
+
             return (
                 <React.Fragment key={i}>
                    <WorkoutHistoryItemComponent workout={workout}/>
@@ -55,9 +68,30 @@ export const WorkoutHistoryPage = () => {
         })
     }
 
+    const renderCategoryOptions = (items: Array<string | number>) => {
+        return items.map(item => {
+            return <MenuItem key={item} value={item}>{item.toString().toUpperCase()}</MenuItem>
+        })
+    }
+
     return (
         <Container>
             <Box className={'content-wrapper'}>
+                <FormControl
+                    className={'workout-category-select'}
+                    size={'small'}
+                >
+                    <InputLabel id="category-label">Category</InputLabel>
+                    <Select
+                        labelId="set-label"
+                        id="category-dropdown"
+                        value={selectedCategory}
+                        label="Category"
+                        onChange={(event) => setSelectedCategory(event.target.value)}
+                    >
+                        { renderCategoryOptions(categories)}
+                    </Select>
+                </FormControl>
                 { formatWorkoutItems() }
             </Box>
             <Button

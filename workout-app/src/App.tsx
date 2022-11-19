@@ -19,7 +19,6 @@ function App() {
 
 
     useEffect(() => {
-        console.log('Toggling Theme!');
     }, [isDarkTheme])
 
     if (!token) {

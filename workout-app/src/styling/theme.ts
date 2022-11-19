@@ -37,7 +37,7 @@ const lightThemeOptions: ThemeOptions = {
         MuiFormControlLabel : {
             styleOverrides: {
                 label: {
-                    color: textPrimaryLight,
+                    color: textSecondaryLight,
                 },
             }
         },
