@@ -22,6 +22,6 @@ export const useToken = () => {
     return {
         setToken: saveToken,
         token,
-        deleteToken: deleteToken
+        deleteToken
     }
 }

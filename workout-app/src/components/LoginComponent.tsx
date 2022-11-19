@@ -8,7 +8,7 @@ import {
     FormControlLabel,
     IconButton,
     InputAdornment,
-    InputLabel
+    InputLabel, Paper, Container
 } from "@mui/material";
 import {
     AccountCircle,
@@ -149,115 +149,107 @@ export const LoginComponent = (props: Props) => {
     }
 
     return (
-        <Box >
-            {
-                showAlert &&
-                <AlertComponent
-                    title={'Error'}
-                    message={'User already exists!'}
-                    severity={'error'}
-                    onClose={() => setShowAlert(false)}
-                />
+            <Container>
+                <Box >
+                    {
+                        showAlert &&
+                        <AlertComponent
+                            title={'Error'}
+                            message={'User already exists!'}
+                            severity={'error'}
+                            onClose={() => setShowAlert(false)}
+                        />
 
-            }
-            <div className={'content-wrapper'}>
-                {/*<h2>Let's See Some Id</h2>*/}
+                    }
+                </Box>
 
+                <Paper>
+                    <Box className={'content-wrapper login-page'}>
 
-                <FormControlLabel control={<Checkbox />} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
+                        <FormControlLabel control={<Checkbox/>} label="Create Account" onChange={handleClickCreateAccountCheckbox} />
 
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                    <InputLabel htmlFor="username">
-                        Username
-                    </InputLabel>
-                    <Input
-                        error={errors.username}
-                        id="username"
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <AccountCircle />
-                            </InputAdornment>
+                        <FormControl fullWidth sx={{ m: 1}} variant="standard">
+                            <InputLabel htmlFor="username">
+                                Username
+                            </InputLabel>
+                            <Input
+                                error={errors.username}
+                                id="username"
+                                onChange={handleChange('username')}
+                            />
+                        </FormControl>
+
+                        {
+                            values.createAccount &&
+
+                            <React.Fragment>
+
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
+                                    <InputLabel htmlFor="firstName">
+                                        First Name
+                                    </InputLabel>
+                                    <Input
+                                        error={errors.firstName}
+                                        id="firstName"
+                                        onChange={handleChange('firstName')}
+                                    />
+                                </FormControl>
+
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
+                                    <InputLabel htmlFor="lastName">
+                                        Last Name
+                                    </InputLabel>
+                                    <Input
+                                        error={errors.lastName}
+                                        id="lastName"
+                                        onChange={handleChange('lastName')}
+                                    />
+                                </FormControl>
+
+                                <FormControl fullWidth sx={{ m: 1}} variant="standard">
+                                    <InputLabel htmlFor="email">
+                                        Email
+                                    </InputLabel>
+                                    <Input
+                                        error={errors.email}
+                                        id="email"
+                                        onChange={handleChange('email')}
+                                    />
+                                </FormControl>
+                            </React.Fragment>
                         }
-                        onChange={handleChange('username')}
-                    />
-                </FormControl>
 
-                {
-                    values.createAccount &&
-
-                    <div className={'content-wrapper'}>
-
-                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                            <InputLabel htmlFor="firstName">
-                                First Name
-                            </InputLabel>
+                        <FormControl fullWidth sx={{ m: 1}} variant="standard">
+                            <InputLabel htmlFor="password">Password</InputLabel>
                             <Input
-                                error={errors.firstName}
-                                id="firstName"
-                                onChange={handleChange('firstName')}
-                            />
-                        </FormControl>
-
-                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                            <InputLabel htmlFor="lastName">
-                                Last Name
-                            </InputLabel>
-                            <Input
-                                error={errors.lastName}
-                                id="lastName"
-                                onChange={handleChange('lastName')}
-                            />
-                        </FormControl>
-
-                        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                            <InputLabel htmlFor="email">
-                                Email
-                            </InputLabel>
-                            <Input
-                                error={errors.email}
-                                id="email"
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <EmailRounded />
+                                error={errors.password}
+                                id="password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
                                     </InputAdornment>
                                 }
-                                onChange={handleChange('email')}
                             />
                         </FormControl>
-                    </div>
-                }
 
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                    <InputLabel htmlFor="password">Password</InputLabel>
-                    <Input
-                        error={errors.password}
-                        id="password"
-                        type={values.showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange('password')}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                >
-                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-
-                <Button
-                    className={'primary-button'}
-                    sx={{marginTop: '2rem'}}
-                    variant='contained'
-                    onClick={() => handleLoginOrCreateAccountClicked()}
-                >{values.createAccount ? 'Create' : 'Login'}
-                </Button>
-
-            </div>
-        </Box>
+                        <Button
+                            className={'primary-button'}
+                            sx={{marginTop: '2rem'}}
+                            variant='contained'
+                            onClick={() => handleLoginOrCreateAccountClicked()}
+                        >{values.createAccount ? 'Create' : 'Login'}
+                        </Button>
+                    </Box>
+                </Paper>
+            </Container>
     )
 }

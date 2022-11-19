@@ -1,76 +1,118 @@
-//$primary: #1976d2;
-$primary: #35AFFC;
-$secondary: #7fc4f1;
-
-$gray-blue: #EEF0F2;
-$gray: #65655E;
-
-$dark-grey: #232F34;
-
 .App {
   text-align: center;
-  //background-color: $dark-grey;
-  background-color: white;
+  overflow: auto;
+  background-size: cover;
+  min-height: 100vh;
+
+  &.dark-theme {
+    background-color: #424B37;
+  }
+
+  &.light-theme {
+    background-color: #CFD3D7;
+  }
 }
 
 .menu-container {
-  display: flex !important;
+  display: flex;
   justify-content: center;
   margin-top: 1rem;
 }
 
-@media (min-width:768px) {
-  .main-logo {
-    max-width: 400px;
-    max-height: 75px;
-  }
-}
+//@media (min-width:768px) {
+//  .main-logo {
+//    max-width: 400px;
+//    max-height: 75px;
+//  }
+//}
+//
+//@media (min-width:300px) {
+//  .main-logo {
+//    max-width: 225px;
+//    max-height: 56px;
+//  }
+//}
 
-@media (min-width:300px) {
-  .main-logo {
-    max-width: 225px;
-    max-height: 56px;
-  }
-}
-
-.menu-icon {
-  margin-left: 1.5rem;
-}
+//.menu-icon {
+//  margin-left: 1.5rem;
+//}
 
 .profile-icon {
-  color: white;
-  background-color: black;
   font-size: 48px !important;
-}
-
-.App-header {
-  background-color: white;
-  height: 6rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  padding-bottom: 1rem;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 2rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
+
+}
+
+.login-page {
+  align-items: center;
+  padding: 1rem;
+}
+
+.dashboard-page {
   align-items: center;
 }
 
-.dashboard-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10rem;
+  height:10rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 
-  .dashboard-button {
-    margin-top: 2rem !important;
-    width: 10rem;
-    height: 7rem;
+  .dashboard-card-icon {
+    font-size: 7rem;
+    color: #0F0F0F;
+  }
+  .dashboard-card-text {
+    color: #0F0F0F;
+  }
+
+  .dashboard-card-icon-light {
+    font-size: 7rem;
+    color: #0F0F0F;
+  }
+  .dashboard-card-text-light {
+    color: #0F0F0F;
+  }
+
+}
+
+.new-workout-page {
+  .workout-title {
+    margin-right: 1rem;
+  }
+  .workout-category-select {
+    width: 7rem;
+  }
+}
+
+.exercise-card {
+  margin-top: .75rem;
+  margin-bottom: .5rem;
+
+  .exercise-card-header {
+    text-align: start !important;
+    padding-bottom: 0;
+  }
+
+  .exercise-card-content {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .set-title {
+      text-align: start;
+      padding-left: 1rem;
+      margin-bottom: .5rem;
+    }
   }
 }
 
@@ -78,35 +120,6 @@ $dark-grey: #232F34;
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-.page-content {
-  .page-header {
-    margin-top: 0 !important;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-  .exercise-title {
-    text-transform: capitalize;
-    text-align: start;
-    color: $primary;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
-  }
-  .exercise-grid {
-    padding-bottom: .5rem;
-    width: 350px !important;
-
-    .set-title {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 0;
-      margin-top: .5rem;
-    }
-  }
-
-  .workout-name {
-    margin-right: 1rem;
-  }
 }
 
 .exercise-dropdown {
@@ -125,43 +138,26 @@ $dark-grey: #232F34;
   padding-right: .5rem;
 }
 
-.primary-button {
-  background-color: $primary !important;
-}
-
-.primary-outline-button {
-  border-color: $primary !important;
-}
-
 .table-header-row {
-  background-color: $primary;
+  //background-color: $primary;
   .MuiTableCell-root {
-    color: white;
-    border: 0 $primary !important;
+    //color: white;
+    //border: 0 $primary !important;
   }
 }
 
 .table-header-row-2 {
-  background-color: $secondary;
-  .MuiTableCell-root {
-    color: white;
-    border: 0 darkgray !important;
-  }
+  //background-color: $secondary;
+  //.MuiTableCell-root {
+  //  color: white;
+  //  border: 0 darkgray !important;
+  //}
 }
 
 .table-record-row-0 {
-  background-color: $gray-blue;
+  //background-color: $gray-blue;
 }
 
 .table-record-row-1 {
-  background-color: white;
-}
-
-.workout-history-item {
-  width: auto !important;
-  border: 1px solid $gray-blue;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  //background-color: white;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Divider, Grid, OutlinedInput} from "@mui/material";
+import {Box, Card, CardContent, CardHeader, Grid, OutlinedInput} from "@mui/material";
 import {Exercise} from "../pages/NewWorkoutPage";
 
 const SET_MAP : any = {
@@ -30,7 +30,7 @@ export const ExerciseComponent = (props: Props) => {
             setList.push(
                 <div key={i}>
                     <Grid>
-                        <h4 className={'set-title'}>Set {SET_MAP[i + 1]}</h4>
+                        <p className={'set-title'}>Set {SET_MAP[i + 1]}</p>
                         <OutlinedInput
                             sx={{ m: .5, width: '9ch' }}
                             size='small'
@@ -56,12 +56,17 @@ export const ExerciseComponent = (props: Props) => {
     }
 
     return (
-        <Box>
-            <Grid className={`exercise-grid`}>
-                <h2 className={'exercise-title'}>{ exercise.name }</h2>
+        <Card
+            className={'exercise-card'}
+            raised={true}
+        >
+            <CardHeader
+                className={'exercise-card-header'}
+                title={exercise.name}
+            />
+            <CardContent className={'exercise-card-content'}>
                 { renderSets(exercise.sets) }
-            </Grid>
-            <Divider variant="middle" />
-        </Box>
+            </CardContent>
+        </Card>
     )
 }

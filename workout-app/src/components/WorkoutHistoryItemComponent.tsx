@@ -1,24 +1,28 @@
 import React from 'react';
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow
+} from "@mui/material";
 
 interface Props {
     workout: any
 }
 
+const MAX_NAME_LENGTH = 14;
+
 export const WorkoutHistoryItemComponent = (props: Props) => {
 
     const workout = props.workout
 
-    const formatWorkoutName = (workoutName) => {
-        if (workoutName.length > 16) {
-            return `${workoutName.substring(0, 16)}...`
-        }
-        return workoutName;
-    }
-
     const formatExerciseName = (exerciseName) => {
-        if (exerciseName.length > 16) {
-            return `${exerciseName.substring(0, 16)}...`
+        if (exerciseName.length + 3> MAX_NAME_LENGTH) {
+            return `${exerciseName.substring(0, MAX_NAME_LENGTH - 3)}...`
         }
         return exerciseName;
     }
@@ -26,55 +30,55 @@ export const WorkoutHistoryItemComponent = (props: Props) => {
     const formatWorkoutHistory = () => {
         return workout.value.map((exercise: any, i) => {
             return (
-                <TableBody>
-                    <TableRow
-                        key={`${exercise.name}-row-${i}`}
-                        className={'table-header-row-2'}
-                    >
-                        <TableCell align={'center'} aria-label={exercise.name}><b>{formatExerciseName(exercise.name)}</b></TableCell>
-                        <TableCell align={'right'}><b>Weight</b></TableCell>
-                        <TableCell align={'right'}><b>Reps</b></TableCell>
-                    </TableRow>
-                    {
-                        exercise.values.map((set, k) => {
-                            const color = k % 2;
-                            return (
-                                <React.Fragment>
-                                    <TableRow
-                                        key={`${set.weight}-${i}${k}`}
-                                        className={`table-record-row-${color}`}
-                                    >
-                                        <TableCell align={'center'}>Set {k + 1}</TableCell>
-                                        <TableCell align={'right'}>{set.weight}</TableCell>
-                                        <TableCell align={'right'}>{set.reps}</TableCell>
-                                    </TableRow>
-                                </React.Fragment>
-                            )
-                        })
-                    }
-                </TableBody>
+                <TableContainer>
+                    <Table size="small" aria-label="workout history">
+                        <TableBody>
+                            <TableRow
+                                key={`${exercise.name}-row-${i}`}
+                                className={'table-header-row-2'}
+                            >
+                                <TableCell sx={{width: '14ch'}} align={'left'} aria-label={exercise.name}><b>{formatExerciseName(exercise.name)}</b></TableCell>
+                                <TableCell sx={{width: '5ch'}} align={'center'}><b>Weight</b></TableCell>
+                                <TableCell sx={{width: '4ch'}} align={'center'}><b>Reps</b></TableCell>
+                            </TableRow>
+                            {
+                                exercise.values.map((set, k) => {
+                                    const color = k % 2;
+                                    return (
+                                        <React.Fragment>
+                                            <TableRow
+                                                key={`${set.weight}-${i}${k}`}
+                                                className={`table-record-row-${color}`}
+                                            >
+                                                <TableCell >&ensp; Set {k + 1}</TableCell>
+                                                <TableCell align={'center'}>{set.weight}</TableCell>
+                                                <TableCell align={'center'}>{set.reps}</TableCell>
+                                            </TableRow>
+                                        </React.Fragment>
+                                    )
+                                })
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             )
         })
     }
 
     return (
-        <Box>
-            <TableContainer className={'workout-history-item'}>
-                <Table size="small" aria-label="workout history">
-                    <TableHead key={`${workout.workoutName}-header`}>
-                        <TableRow
-                            key={`${workout.workoutName}-row`}
-                            className={'table-header-row'}
-                        >
-                            <TableCell><b>{formatWorkoutName(workout.workoutName)}</b></TableCell>
-                            <TableCell align={'center'}><b>{workout.category}</b></TableCell>
-                            <TableCell align={'right'}><b>{workout.date}</b></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    { formatWorkoutHistory() }
-                </Table>
-            </TableContainer>
-        </Box>
+        <Card className={'exercise-card'}>
+            <CardHeader
+                title={workout.workoutName}
+                subheader={`${workout.category}`}
+            />
+            <CardContent>
+                <TableContainer className={'workout-history-item'}>
+                    <Table size="small" aria-label="workout history">
+                        { formatWorkoutHistory() }
+                    </Table>
+                </TableContainer>
+            </CardContent>
+        </Card>
     )
 
 
