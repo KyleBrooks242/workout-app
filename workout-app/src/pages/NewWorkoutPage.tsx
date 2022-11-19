@@ -150,93 +150,91 @@ export const NewWorkoutPage = () => {
 
     return (
         <Container>
-            {/*<Paper>*/}
-                <Box className={'content-wrapper new-workout-page'}>
+            <Box className={'content-wrapper new-workout-page'}>
 
-                    {/*-----------------------Workout Category Dialog------------------------------*/}
-                    <AddWorkoutCategoryDialog
+                {/*-----------------------Workout Category Dialog------------------------------*/}
+                <AddWorkoutCategoryDialog
 
-                     handleAddCategory={(category) => handleAddCategory(category)}
-                     handleClose={() => {
-                         setValues({...values, category: dropdownWorkoutCategories[0]})
-                         setIsWorkoutCategoryDialogOpen(false)
-                     }}
-                     isOpen={isCategoryDialogOpen}
-                    />
-
-
-                    {/*-----------------------Add Exercise Dialog------------------------------*/}
-                    <AddExerciseDialog
-                        isOpen={showDialog}
-                        dropdownExerciseOptions={dropdownExerciseOptions}
-                        handleAddExercise={(data: any) => handleAddExercise(data)}
-                        handleClose={() => setShowDialog(false)}/>
+                 handleAddCategory={(category) => handleAddCategory(category)}
+                 handleClose={() => {
+                     setValues({...values, category: dropdownWorkoutCategories[0]})
+                     setIsWorkoutCategoryDialogOpen(false)
+                 }}
+                 isOpen={isCategoryDialogOpen}
+                />
 
 
-                    {/*-----------------------Main Inputs------------------------------*/}
-                    <Grid>
-                        <Card
-                            raised={true}
-                        >
-                            <CardContent>
-                                <Input
-                                    className={'workout-title'}
-                                    placeholder={'Workout Title...'}
-                                    onChange={(event) => handleChange(event, 'workoutName')}
-                                />
-                                <FormControl
-                                    className={'workout-category-select'}
-                                    size={'small'}
+                {/*-----------------------Add Exercise Dialog------------------------------*/}
+                <AddExerciseDialog
+                    isOpen={showDialog}
+                    dropdownExerciseOptions={dropdownExerciseOptions}
+                    handleAddExercise={(data: any) => handleAddExercise(data)}
+                    handleClose={() => setShowDialog(false)}/>
+
+
+                {/*-----------------------Main Inputs------------------------------*/}
+                <Grid>
+                    <Card
+                        raised={true}
+                    >
+                        <CardContent>
+                            <Input
+                                className={'workout-title'}
+                                placeholder={'Workout Title...'}
+                                onChange={(event) => handleChange(event, 'workoutName')}
+                            />
+                            <FormControl
+                                className={'workout-category-select'}
+                                size={'small'}
+                            >
+                                <InputLabel id="category-label">Category</InputLabel>
+                                <Select
+                                    labelId="set-label"
+                                    id="category-dropdown"
+                                    value={values.category}
+                                    label="Category"
+                                    onChange={(event) => handleChange(event, 'category')}
                                 >
-                                    <InputLabel id="category-label">Category</InputLabel>
-                                    <Select
-                                        labelId="set-label"
-                                        id="category-dropdown"
-                                        value={values.category}
-                                        label="Category"
-                                        onChange={(event) => handleChange(event, 'category')}
-                                    >
-                                        { renderDropdownOptions(dropdownWorkoutCategories)}
-                                    </Select>
-                                </FormControl>
-                            </CardContent>
-                        </Card>
-                        <Grid>
-                            {/*-----------------------Exercises------------------------------*/}
-                            { exerciseList ? renderExercises() : null }
-                        </Grid>
-                        <Grid>
-                            {/*-----------------------Bottom Buttons------------------------------*/}
-                            <Button
-                                variant="outlined"
-                                color={'secondary'}
-                                onClick={() => goToPage('/dashboard')}
-                            >
-                                Home
-                            </Button>
-
-                            <Button
-                                className={'add-exercise-button primary-button'}
-                                variant="contained"
-                                color={'secondary'}
-                                onClick={() => saveWorkout()}
-                            >
-                                Save
-                            </Button>
-
-                            <Button
-                                className={'add-exercise-button primary-button'}
-                                startIcon={<AddIcon />}
-                                variant="contained"
-                                onClick={() => setShowDialog(true)}
-                            >
-                                Add
-                            </Button>
-
-                        </Grid>
+                                    { renderDropdownOptions(dropdownWorkoutCategories)}
+                                </Select>
+                            </FormControl>
+                        </CardContent>
+                    </Card>
+                    <Grid>
+                        {/*-----------------------Exercises------------------------------*/}
+                        { exerciseList ? renderExercises() : null }
                     </Grid>
-                </Box>
-            {/*</Paper>*/}
+                    <Grid>
+                        {/*-----------------------Bottom Buttons------------------------------*/}
+                        <Button
+                            variant="outlined"
+                            color={'secondary'}
+                            onClick={() => goToPage('/dashboard')}
+                        >
+                            Home
+                        </Button>
+
+                        <Button
+                            className={'add-exercise-button primary-button'}
+                            variant="contained"
+                            color={'secondary'}
+                            onClick={() => saveWorkout()}
+                        >
+                            Save
+                        </Button>
+
+                        <Button
+                            className={'add-exercise-button primary-button'}
+                            startIcon={<AddIcon />}
+                            variant="contained"
+                            onClick={() => setShowDialog(true)}
+                        >
+                            Add
+                        </Button>
+
+                    </Grid>
+                </Grid>
+            </Box>
         </Container>
     )
 

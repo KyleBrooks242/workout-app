@@ -9,7 +9,7 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {FormControlLabel, Switch} from "@mui/material";
-import {useTheme} from "../utils/useTheme";
+import {useCustomThemeHook} from "../utils/useCustomThemeHook";
 import {useState} from "react";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 
 export const MenuDropdownComponent = (props: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { isDarkTheme } = useTheme();
+    const { isDarkTheme } = useCustomThemeHook();
     const [isDarkThemeChecked, setIsDarkThemeChecked] = useState(isDarkTheme);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
