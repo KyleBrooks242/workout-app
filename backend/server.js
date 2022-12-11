@@ -8,7 +8,10 @@ const {
     addExerciseOption,
     upsertWorkout,
     getWorkoutByUser,
-    getWorkoutCategoriesByUser, addWorkoutCategory,
+    getWorkoutCategoriesByUser,
+    addWorkoutCategory,
+    getProfilePhotoByUser,
+    addProfilePicture
 } = require('./db/dbUtils');
 const apiErrorHandler = require('./middleware/errors/apiErrorHandler');
 const verifyToken = require('./middleware/auth');
@@ -33,7 +36,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 app.post('/login', async (req, res, next) => {
 
     try {
-        console.log(req.body.data);
         const rawData = req.body.data;
         const username = rawData.username;
         const password = rawData.password;
@@ -118,6 +120,34 @@ app.post('/user',async (req, res, next) => {
 //For all routes below, we want to check for and verify the JWT before continuing!
 
 app.use(verifyToken);
+
+app.get('/profile-photo', async (req, res, next) => {
+    try {
+        console.log(`GET /profile-photo hit...`);
+        const result = await getProfilePhotoByUser(req.user);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in GET /profile-photo`);
+        next(ApiError.internal('Something went wrong!'));
+    }
+})
+
+app.post('/profile-photo', async (req, res, next) => {
+
+    try {
+        console.log(`POST /profile-photo hit...`);
+
+        const image = req.body.data;
+
+        const result = await addProfilePicture(req.user, image);
+        res.status(200).json(result);
+    }
+    catch(error) {
+        console.log(`Error in POST /profile-photo`);
+        next(ApiError.internal('Something went wrong!'));
+    }
+})
 
 /**
  * Get a list of exercise options for a given user

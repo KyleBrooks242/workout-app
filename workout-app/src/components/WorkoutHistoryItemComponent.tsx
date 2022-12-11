@@ -23,7 +23,6 @@ export const WorkoutHistoryItemComponent = (props: Props) => {
     const theme: any = useTheme();
 
     const calculateTotalWeightLifted = () => {
-        console.log("calculating...");
         let total = 0;
         workout.value.forEach(exercise => {
             exercise.values.forEach(set => {

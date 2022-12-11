@@ -11,15 +11,18 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {FormControlLabel, Switch} from "@mui/material";
 import {useCustomThemeHook} from "../utils/useCustomThemeHook";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useProfileImage} from "../utils/useProfileImage";
 
 interface Props {
-    handleSignOut: any
-    handleTheme: any
+    handleSignOutClicked: any
+    handleThemeToggled: any
 }
 
 export const MenuDropdownComponent = (props: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { isDarkTheme } = useCustomThemeHook();
+    const { image } = useProfileImage();
     const [isDarkThemeChecked, setIsDarkThemeChecked] = useState(isDarkTheme);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,6 +31,13 @@ export const MenuDropdownComponent = (props: Props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const navigate = useNavigate();
+
+    const handleProfileClicked = () => {
+        handleClose();
+        navigate('/profile');
+    }
 
 
 
@@ -40,9 +50,20 @@ export const MenuDropdownComponent = (props: Props) => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
             >
-                <Avatar>
-                    <AccountCircleIcon className={'profile-icon'} />
-                </Avatar>
+                { image &&
+                    <Avatar
+                        alt="Profile photo"
+                        src={image}
+                        className={'profile-icon'}
+                    >
+                    </Avatar>
+                }
+
+                { !image &&
+                    <Avatar>
+                        <AccountCircleIcon className={'profile-icon'} />
+                    </Avatar>
+                }
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -78,7 +99,9 @@ export const MenuDropdownComponent = (props: Props) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
+                <MenuItem
+                    onClick={handleProfileClicked}
+                >
                     <Avatar /> Profile
                 </MenuItem>
                 <MenuItem>
@@ -94,7 +117,7 @@ export const MenuDropdownComponent = (props: Props) => {
                                 checked={isDarkThemeChecked}
                                 onChange={(event) => {
                                     setIsDarkThemeChecked(event.target.checked)
-                                    props.handleTheme(event.target.checked)}
+                                    props.handleThemeToggled(event.target.checked)}
                             }
                             />
                         }
@@ -103,7 +126,10 @@ export const MenuDropdownComponent = (props: Props) => {
                 </MenuItem>
                 <Divider />
                 <MenuItem
-                    onClick={props.handleSignOut}
+                    onClick={() => {
+                        handleClose();
+                        props.handleSignOutClicked()
+                    }}
                 >
                     <ListItemIcon>
                         <Logout fontSize="small" />

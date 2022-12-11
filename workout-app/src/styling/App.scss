@@ -160,3 +160,17 @@
    border: 0;
  }
 }
+
+.photo-upload {
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  padding: 3px;
+  cursor: pointer;
+  background: #759FBC;
+  margin-bottom: 25px;
+}
+
+input[type="file"] {
+  display: none;
+}
