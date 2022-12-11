@@ -46,7 +46,6 @@ interface Props {
 }
 
 export const LoginComponent = (props: Props) => {
-    // const navigate = useNavigate();
 
     const [values, setValues] = useState<State>({
         username: '',

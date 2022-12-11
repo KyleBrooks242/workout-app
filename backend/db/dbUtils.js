@@ -62,7 +62,6 @@ const createUser = async (user, email, firstName, lastName, password) => {
  * @returns {Promise<nano.DocumentGetResponse>}
  */
 const getUser = async (user) => {
-    console.log(`Fetching password for user ${user}`);
     return await db.get(user);
 }
 
@@ -237,7 +236,7 @@ const upsertProfilePicture = async (user, image) => {
 }
 
 const getDBDateFormat = () => {
-    const date = dayjs().format('YYYY/MM/DD_T_HH:mm:SSS');
+    return dayjs().format('YYYY/MM/DD_T_HH:mm:SSS');
 }
 
 module.exports = {

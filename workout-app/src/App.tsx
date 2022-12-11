@@ -9,48 +9,31 @@ import { PreferencesComponent } from './components/PreferencesComponent';
 import { useToken } from "./utils/useToken";
 import { NewWorkoutPage } from "./pages/NewWorkoutPage";
 import { WorkoutHistoryPage } from "./pages/WorkoutHistoryPage";
-import {Switch, ThemeProvider} from "@mui/material";
+import { ThemeProvider} from "@mui/material";
 import { useCustomThemeHook } from "./utils/useCustomThemeHook";
 import { ProfilePage } from "./pages/ProfilePage";
+import {useProfileImage} from "./utils/useProfileImage";
 
 function App() {
 
     const { token, setToken, deleteToken } = useToken();
+    const { image, deleteImage, setImage } = useProfileImage();
     const { isDarkTheme, setTheme } = useCustomThemeHook();
 
-    // if (!token) {
-    //     // console.log(window.location.href);
-    //     // if (!window.location.href.endsWith('/dashboard')) {
-    //     //     const oldPath = window.location.href;
-    //     //     //This should match any pattern like /foo, /foo/, /bar, etc.
-    //     //     const matched = oldPath.match(/\/[^\/]*\/*$/);
-    //     //     const newPath = oldPath.replace(/\/[^\/]*\/*$/, '/dashboard');
-    //     //     window.location.href = newPath;
-    //     // }
-    //
-    //     return (
-    //         <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-    //             <div className={`App ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
-    //                     <MenuComponent
-    //                         isSignedIn={false}
-    //                         handleSignOutClicked={deleteToken}
-    //                         handleThemeToggled={setTheme}
-    //                     />
-    //                 <LoginComponent setToken={setToken}/>
-    //             </div>
-    //         </ThemeProvider>
-    //     )
-    // }
+        const handleSignOut = () => {
+            deleteToken();
+            deleteImage();
+        }
 
-    // else {
         return (
             <BrowserRouter>
                 <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
                     <div className={`App ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
                         <MenuComponent
-                            isSignedIn={true}
-                            handleSignOutClicked={deleteToken}
+                            isSignedIn={!!token}
+                            handleSignOutClicked={() => handleSignOut()}
                             handleThemeToggled={setTheme}
+                            profileImage={image? image : ''}
                         />
                             <Routes>
                                 {
@@ -65,11 +48,11 @@ function App() {
                                     token &&
                                     <React.Fragment>
                                         <Route path="/login" element={<Navigate replace to="/dashboard" />} />
-                                        <Route path={'/dashboard'} element={<DashboardPage/>} />
+                                        <Route path={'/dashboard'} element={<DashboardPage image={image} setImage={setImage}/>} />
                                         <Route path={'/preferences'} element={<PreferencesComponent/>} />
                                         <Route path={'/new-workout'} element={<NewWorkoutPage/>} />
                                         <Route path={'/workout-history'} element={<WorkoutHistoryPage/>} />
-                                        <Route path={'/profile'} element={<ProfilePage /> } />
+                                        <Route path={'/profile'} element={<ProfilePage image={image} setImage={setImage} deleteImage={deleteImage} /> } />
                                         <Route path="*" element={<Navigate replace to="/dashboard" />} />
                                     </React.Fragment>
                                 }

@@ -9,11 +9,10 @@ interface Props {
     isSignedIn: boolean
     handleSignOutClicked: any
     handleThemeToggled: any
+    profileImage: string;
 }
 
 export const MenuComponent = (props: Props) => {
-
-    const { image } = useProfileImage();
 
     return (
         <AppBar
@@ -104,6 +103,7 @@ export const MenuComponent = (props: Props) => {
                             <MenuDropdownComponent
                                 handleSignOutClicked={props.handleSignOutClicked}
                                 handleThemeToggled={props.handleThemeToggled}
+                                profileImage={props.profileImage}
                             />
 
                         }

@@ -12,17 +12,16 @@ import {FormControlLabel, Switch} from "@mui/material";
 import {useCustomThemeHook} from "../utils/useCustomThemeHook";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useProfileImage} from "../utils/useProfileImage";
 
 interface Props {
     handleSignOutClicked: any
     handleThemeToggled: any
+    profileImage: string
 }
 
 export const MenuDropdownComponent = (props: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { isDarkTheme } = useCustomThemeHook();
-    const { image } = useProfileImage();
     const [isDarkThemeChecked, setIsDarkThemeChecked] = useState(isDarkTheme);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -50,16 +49,16 @@ export const MenuDropdownComponent = (props: Props) => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
             >
-                { image &&
+                { props.profileImage &&
                     <Avatar
                         alt="Profile photo"
-                        src={image}
+                        src={props.profileImage}
                         className={'profile-icon'}
                     >
                     </Avatar>
                 }
 
-                { !image &&
+                { !props.profileImage &&
                     <Avatar>
                         <AccountCircleIcon className={'profile-icon'} />
                     </Avatar>
