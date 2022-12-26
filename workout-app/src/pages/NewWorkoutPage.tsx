@@ -39,16 +39,6 @@ export interface Exercise {
     newExercise?: string
 }
 
-/**
- * TODO
- * 1. Figure out why so many rerenders are happening at the start (and is this a bad thing..? --DONE?
- * 2. Fix how the workout category component works.. aka get console warnings to go away --DONE
- * 3. Continue refactoring how requests are offloaded into a helper file --DONE
- * 4. Make it so that saving a workout takes in the workout name and category --DONE
- * 5. UI Tweaks
- */
-
-
 export const NewWorkoutPage = () => {
 
     const { token } = useToken();

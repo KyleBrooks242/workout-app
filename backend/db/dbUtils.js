@@ -129,7 +129,10 @@ const addWorkoutCategory = async (user, category) => {
 }
 
 const upsertWorkout = async (user, workout) => {
+    console.log(workout);
     const parsedWorkout = JSON.parse(workout);
+
+    console.log(parsedWorkout);
 
     const date = dayjs().format('YYYY-MM-DD');
     const id = `${user}_${parsedWorkout.workoutName}_${date}`

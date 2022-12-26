@@ -8,6 +8,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import {WorkoutHistoryItemComponent} from "../components/WorkoutHistoryItemComponent";
 import Select from "@mui/material/Select";
+import {getWorkoutHistory} from "../queries";
 
 export const WorkoutHistoryPage = () => {
 
@@ -25,23 +26,15 @@ export const WorkoutHistoryPage = () => {
 
 
     const fetchWorkoutHistory = async () => {
-        await axios.get(
-            `/workout`,
-            {
-                headers: { 'authorization': `Bearer ${token}`}
-            }
-        )
-            .then((resp : any) => {
-                setWorkouts(resp.data.docs);
-                const categories: Array<string> = resp.data.docs.map(workout => { return workout.category });
-                const uniqueCategories: any = ['ALL', ...new Set(categories)];
-                setCategories(uniqueCategories);
 
-            })
-            .catch(error => {
-                console.error('Error fetching workout history!');
-                console.error(error)
-            });
+        const workouts:any = await getWorkoutHistory(token);
+        console.log("WORKOUTS~");
+        console.log(workouts);
+        setWorkouts(workouts);
+        const categories: Array<string> = workouts.map(workout => { return workout.category });
+        const uniqueCategories: any = ['ALL', ...new Set(categories)];
+        setCategories(uniqueCategories);
+
     }
 
     useEffect(() => {

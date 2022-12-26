@@ -1,27 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Backdrop,
     Box,
     Button,
-    Card,
-    CardContent,
-    CardHeader,
-    CircularProgress,
     Container,
-    Grid,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow
+    Grid, Paper,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Person2RoundedIcon from '@mui/icons-material/Person2Rounded';
 import axios from "axios";
 import {useToken} from "../utils/useToken";
 import {ProfileInfoComponent} from "../components/ProfileInfoComponent";
+import {getWorkoutHistory} from "../queries";
+import {ProfilePhotoComponent} from "../components/ProfilePhotoComponent";
+import {ProfileStatsComponent} from "../components/ProfileStatsComponent";
+import {Workout} from "../utils/interfaces";
 
 
 interface Props {
@@ -34,6 +26,9 @@ export const ProfilePage = (props: Props) => {
 
     const navigate = useNavigate();
     const { token } = useToken();
+    const [workouts, setWorkouts] = useState<Array<any>>([]);
+    const [categories, setCategories] = useState<Array<any>>([]);
+    const [categoryCount, setCategoryCount] = useState<any>({});
 
     const goToPage = (component: string) => {
         navigate(component);
@@ -68,73 +63,51 @@ export const ProfilePage = (props: Props) => {
         }
         reader.readAsDataURL(file);
     }
-    const formatStats = () => {
-        return (
-            <TableRow
-                key={`some-key`}
-                className={`table-record-row`}
-            >
-                <TableCell className={'history-record-cell'} align={'center'}>Data Key</TableCell>
-                <TableCell className={'history-record-cell'} align={'center'}>Data Value</TableCell>
-            </TableRow>
-        )
+
+    const fetchWorkoutHistory = async () => {
+        const workouts = await getWorkoutHistory(token);
+        const categories: Array<string> = workouts.map(workout => { return workout.category });
+        let categoryCount: any = {};
+        workouts.forEach((workout: Workout) => {
+            categoryCount[workout.category]
+                ? categoryCount[workout.category] += 1
+                : categoryCount[workout.category] = 1;
+        });
+        const uniqueCategories: any = [...new Set(categories)];
+        setWorkouts(workouts)
+        setCategories(Array.from(uniqueCategories));
+        setCategoryCount(categoryCount);
+
+
     }
+
+    useEffect(() => {
+        fetchWorkoutHistory()
+    }, [])
 
     return (
         <Container>
             <Box className={'content-wrapper'}>
-
                 <Grid container spacing={2}>
-                    <Grid
-                        item xs={6}
-                    >
-                        <label htmlFor="photo-upload" className="photo-upload">
-                            {
-                                props.image ?
-                                    <Avatar
-                                        alt="Profile photo"
-                                        src={props.image}
-                                        sx={{width: '8rem', height: '8rem'}}
-                                    >
-                                    </Avatar>
-                                    :
-                                    <Avatar
-                                        sx={{ width: '8rem', height: '8rem' }}
-                                    >
-                                        <Person2RoundedIcon sx={{fontSize: '7.5rem'}} />
-                                        <input id="photo-upload" type="file" onChange={(e) => uploadImage(e)}/>
-                                    </Avatar>
-
-                            }
-                            <input
-                                id="photo-upload"
-                                type="file"
-                                accept="image/png, image/jpeg"
-                                onChange={(e) => uploadImage(e)}
-                            />
-                        </label>
+                    <Grid item xs={6}>
+                        <ProfilePhotoComponent
+                            uploadImage={uploadImage}
+                            image={props.image}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <ProfileInfoComponent/>
                     </Grid>
                     <Grid item xs={12}>
-                        <Card>
-                            <CardHeader
-                                title={'Stats'}
-                            />
-                            <CardContent>
-                                <TableContainer className={'workout-history-item'}>
-                                    <Table size="small" aria-label="workout history">
-                                        <TableBody>
-                                            { formatStats() }
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </CardContent>
-                        </Card>
+                        <ProfileStatsComponent
+                            categoryCount={categoryCount}
+                            categories={categories}
+                            workouts={workouts}
+                        />
                     </Grid>
                 </Grid>
             </Box>
+
             <Button
                 sx={{marginBottom: '1rem', marginTop: '.5rem'}}
                 variant="contained"
