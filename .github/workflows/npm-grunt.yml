@@ -7,13 +7,13 @@ on:
     branches: [ "feature/**" ]
 
 jobs:
-  runs-on: ubuntu-latest
-
-  strategy:
-    matrix:
-      node-version: [ 18.x ]
 
   build-server:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
     steps:
     - uses: actions/checkout@v3
 
@@ -29,6 +29,11 @@ jobs:
         npm install
 
   build-app:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
     steps:
       - uses: actions/checkout@v3
 
