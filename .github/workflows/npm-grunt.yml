@@ -7,13 +7,13 @@ on:
     branches: [ "feature/**" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
+  strategy:
+    matrix:
+      node-version: [ 18.x ]
 
+  build-server:
     steps:
     - uses: actions/checkout@v3
 
@@ -22,8 +22,25 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Build Server
       run: |
-        echo Navigating to workout-app directory and installing...
-        cd workout-app
+        echo Building backend server...
+        cd backend
         npm install
+
+  build-app:
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build App
+        run: |
+          echo Building App...
+          cd workout-app
+          npm install
+        
+  
