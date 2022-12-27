@@ -1,6 +1,6 @@
-const { DBUSER, DBPASS } = process.env;
+const { DBUSER, DBPASS, DBHOST, DBPORT } = process.env;
 const dayjs = require('dayjs');
-const nano = require('nano')(`http://${DBUSER}:${DBPASS}@127.0.0.1:5984`);
+const nano = require('nano')(`http://${DBUSER}:${DBPASS}@${DBHOST}:${DBPORT}`);
 const db = nano.use('workout_app');
 
 const indexDefId = {
@@ -16,6 +16,7 @@ const indexDefDate = {
 db.createIndex(indexDefId);
 db.createIndex(indexDefDate);
 
+
 /**
  *
  * @param user
@@ -23,7 +24,8 @@ db.createIndex(indexDefDate);
  */
 const userExists = async (user) => {
     try {
-        await getUser(user);
+        const result =await getUser(user);
+        console.log(result);
         return true;
     }
     catch {
