@@ -195,9 +195,9 @@ app.get('/workout-category', async (req, res, next) => {
 /**
  * Add an exercise
  **/
-app.post('/exercise', async (req, res, next) => {
+app.post('/exercise-option', async (req, res, next) => {
     try {
-        console.log(`POST /exercise hit...`);
+        console.log(`POST /exercise-option hit...`);
         const rawData = req.body.data;
         console.log(rawData);
 
