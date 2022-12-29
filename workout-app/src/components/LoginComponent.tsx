@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import {clearValidationErrors, validateInput, ValidDataResponse} from "../utils/helpers";
 import {AlertComponent} from "./AlertComponent";
+import {useNavigate} from "react-router-dom";
 
 interface State {
     username: string
@@ -45,6 +46,7 @@ interface Props {
 }
 
 export const LoginComponent = (props: Props) => {
+
     const [values, setValues] = useState<State>({
         username: '',
         password: '',
@@ -111,7 +113,6 @@ export const LoginComponent = (props: Props) => {
         }
 
         if (values.createAccount) {
-            console.log("Creating account...")
             await axios.post(
                 '/user',
                 {
@@ -130,7 +131,6 @@ export const LoginComponent = (props: Props) => {
             });
         }
         else {
-            console.log("logging in...");
             await axios.post(
                 '/login',
                 {
@@ -142,7 +142,6 @@ export const LoginComponent = (props: Props) => {
 
             })
             .catch(error => {
-                console.error('SOMETHING WENT WRONG');
                 console.error(error);
             });
         }

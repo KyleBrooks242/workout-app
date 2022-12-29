@@ -49,7 +49,7 @@ export const fetchCategoriesRequest = async (token) => {
     return list;
 }
 
-export const fetchExercisesRequest = async (token) => {
+export const fetchExerciseOptionsRequest = async (token) => {
     let list: Array<string> = []
     await axios.get(
         `/exercise-option`,
@@ -69,11 +69,11 @@ export const fetchExercisesRequest = async (token) => {
     return list;
 }
 
-export const handleAddExerciseRequest = async (data: Exercise, exerciseList: Array<Exercise>, token) => {
+export const handleAddExerciseOptionRequest = async (data: Exercise, exerciseList: Array<Exercise>, token) => {
 
     if (data.name === '+ Add' && data.newExercise && data.newExercise !== '') {
         await axios.post(
-            '/exercise',
+            '/exercise-option',
             {
                 data: data
             },
@@ -82,8 +82,7 @@ export const handleAddExerciseRequest = async (data: Exercise, exerciseList: Arr
             }
         )
             .then(async () => {
-                console.log(`Successfully added exercise!`);
-                // await fetchExercises();
+                console.log(`Successfully added exercise option!`);
 
             })
             .catch(error => {

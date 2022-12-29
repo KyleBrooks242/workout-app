@@ -1,17 +1,47 @@
-import React from 'react';
-import {Box, Button, Card, CardContent, CardHeader, CardMedia, Container, Grid, Paper} from "@mui/material";
+import React, {useEffect} from 'react';
+import {Box, Card, CardContent, Container} from "@mui/material";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import HistoryIcon from '@mui/icons-material/History';
+
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import {useToken} from "../utils/useToken";
 
-export const DashboardPage = () => {
+interface Props {
+    setImage: any
+    image: any
+}
+
+export const DashboardPage = (props: Props) => {
 
     const navigate = useNavigate();
+    const { token } = useToken();
 
     const goToPage = (component: string) => {
         navigate(component);
     }
+
+    const fetchProfilePhoto = async () => {
+        await axios.get(
+            `/profile-photo`,
+            {
+                headers: { 'authorization': `Bearer ${token}`}
+            }
+        )
+            .then((resp : any) => {
+                props.setImage(resp.data.image.toString())
+            })
+            .catch(error => {
+                console.error('Error fetching profile photo!');
+                console.error(error)
+            });
+    }
+
+    useEffect(() => {
+        if (!props.image) {
+            fetchProfilePhoto();
+        }
+    })
 
     return (
         <Container>

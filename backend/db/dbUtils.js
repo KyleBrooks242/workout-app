@@ -1,6 +1,6 @@
-const { DBUSER, DBPASS } = process.env;
+const { DBUSER, DBPASS, DBHOST, DBPORT } = process.env;
 const dayjs = require('dayjs');
-const nano = require('nano')(`http://${DBUSER}:${DBPASS}@127.0.0.1:5984`);
+const nano = require('nano')(`http://${DBUSER}:${DBPASS}@${DBHOST}:${DBPORT}`);
 const db = nano.use('workout_app');
 
 const indexDefId = {
@@ -16,6 +16,7 @@ const indexDefDate = {
 db.createIndex(indexDefId);
 db.createIndex(indexDefDate);
 
+
 /**
  *
  * @param user
@@ -23,7 +24,8 @@ db.createIndex(indexDefDate);
  */
 const userExists = async (user) => {
     try {
-        await getUser(user);
+        const result =await getUser(user);
+        console.log(result);
         return true;
     }
     catch {
@@ -41,7 +43,6 @@ const userExists = async (user) => {
  * @returns {Promise<nano.DocumentInsertResponse>}
  */
 const createUser = async (user, email, firstName, lastName, password) => {
-    //TODO ADD STANDARD SET OF FIELDS (CREATED AT, UPDATED AT)
     console.log('Creating user...');
     const response = await db.insert({
         _id: user,
@@ -49,7 +50,8 @@ const createUser = async (user, email, firstName, lastName, password) => {
         firstName: firstName,
         lastName: lastName,
         password: password,
-        docType: 'USER'
+        docType: 'USER',
+        createdAt: getDBDateFormat()
     });
 
     return response;
@@ -62,7 +64,6 @@ const createUser = async (user, email, firstName, lastName, password) => {
  * @returns {Promise<nano.DocumentGetResponse>}
  */
 const getUser = async (user) => {
-    console.log(`Fetching password for user ${user}`);
     return await db.get(user);
 }
 
@@ -73,7 +74,8 @@ const addExerciseOption = async (user, exercise) => {
         _id: `${user}_${exercise}`,
         userName: user,
         exercise: exercise,
-        docType: 'EXERCISE_OPTION'
+        docType: 'EXERCISE_OPTION',
+        createdAt: getDBDateFormat()
     });
 
     return response;
@@ -121,14 +123,18 @@ const addWorkoutCategory = async (user, category) => {
         _id: `${user}_${category}`,
         userName: user,
         category: category,
-        docType: 'WORKOUT_CATEGORY'
+        docType: 'WORKOUT_CATEGORY',
+        createdAt: getDBDateFormat()
     });
 
     return response;
 }
 
 const upsertWorkout = async (user, workout) => {
+    console.log(workout);
     const parsedWorkout = JSON.parse(workout);
+
+    console.log(parsedWorkout);
 
     const date = dayjs().format('YYYY-MM-DD');
     const id = `${user}_${parsedWorkout.workoutName}_${date}`
@@ -145,7 +151,8 @@ const upsertWorkout = async (user, workout) => {
                     category: parsedWorkout.category,
                     docType: 'WORKOUT',
                     date: date,
-                    _rev: res._rev
+                    _rev: res._rev,
+                    updatedAt: getDBDateFormat()
                 }
             )
         })
@@ -164,7 +171,8 @@ const upsertWorkout = async (user, workout) => {
                     userName: user,
                     date: date,
                     category: parsedWorkout.category,
-                    docType: 'WORKOUT'
+                    docType: 'WORKOUT',
+                    createdAt: getDBDateFormat()
                 }
             )
         })
@@ -186,6 +194,56 @@ const getWorkoutByUser = async (user) => {
     return result;
 }
 
+const getProfilePhotoByUser = async (user) => {
+    try {
+        const result = await db.get(`${user}_PROFILE_PIC`);
+        return result;
+    }
+    catch (error)  {
+        if (error.error === 'not_found') {
+            return ''
+        }
+        throw error;
+    }
+}
+
+const upsertProfilePicture = async (user, image) => {
+    const id = `${user}_PROFILE_PIC`;
+
+    await db.get(id)
+        .then(res => {
+            return db.insert(
+                {
+                    _id: id,
+                    docType: "PROFILE_PIC",
+                    image: image,
+                    updatedAt: getDBDateFormat(),
+                    _rev: res._rev,
+                }
+            )
+        })
+        .catch((error) => {
+            console.log('Error in catch block of upsert profile picture!!');
+            //If we don't find the document, no problem... insert as new!
+            if (error.statusCode !== 404) {
+                throw new Error('Something went wrong!');
+            }
+            console.log('No existing profile photo. Inserting new...')
+            return db.insert(
+                {
+                    _id: id,
+                    docType: "PROFILE_PIC",
+                    image: image,
+                    createdAt: getDBDateFormat()
+                }
+            )
+        })
+}
+
+const getDBDateFormat = () => {
+    return dayjs().format('YYYY/MM/DD_T_HH:mm:SSS');
+}
+
 module.exports = {
     createUser,
     getUser,
@@ -195,5 +253,8 @@ module.exports = {
     upsertWorkout,
     getWorkoutByUser,
     getWorkoutCategoriesByUser,
-    addWorkoutCategory
+    addWorkoutCategory,
+    getProfilePhotoByUser,
+    addProfilePicture: upsertProfilePicture
+
 };

@@ -3,39 +3,18 @@ import logo from '../logos/logo.png';
 import {Container, Box, AppBar, Toolbar, Typography} from "@mui/material";
 import { MenuDropdownComponent } from "./MenuDropdownComponent";
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import {useProfileImage} from "../utils/useProfileImage";
 
 interface Props {
     isSignedIn: boolean
-    handleSignOut: any
-    handleTheme: any
-}
-
-function AdbIcon(props: { sx: { mr: number; display: { md: string; xs: string } } }) {
-    return null;
+    handleSignOutClicked: any
+    handleThemeToggled: any
+    profileImage: string;
 }
 
 export const MenuComponent = (props: Props) => {
+
     return (
-
-        // <header>
-        //     <img
-        //         src={logo}
-        //         alt={'Swole Nation'}
-        //         className={`main-logo ${props.isSignedIn ? 'off-center' : 'centered'}`}
-        //     />
-        //     {
-        //         props.isSignedIn
-        //             ?
-        //             <Box className={'menu-icon'}>
-        //                 <MenuDropdownComponent
-        //                     handleSignOut={props.handleSignOut}
-        //                 />
-        //             </Box>
-        //             :
-        //             null
-        //     }
-        // </header>
-
         <AppBar
             position={'static'}
             enableColorOnDark={true}
@@ -97,12 +76,6 @@ export const MenuComponent = (props: Props) => {
                         {/*    ))}*/}
                         {/*</Menu>*/}
                     </Box>
-                    <AdbIcon
-                        sx={{
-                            display: { xs: 'flex', md: 'none'},
-                            mr: 1,
-                        }}
-                    />
                     <Typography
                         variant="h5"
                         noWrap
@@ -122,56 +95,18 @@ export const MenuComponent = (props: Props) => {
                     >
                         SWOLE NAYSH
                     </Typography>
-                    {/*<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>*/}
-                    {/*    /!*{pages.map((page) => (*!/*/}
-                    {/*    /!*    <Button*!/*/}
-                    {/*    /!*        key={page}*!/*/}
-                    {/*    /!*        onClick={handleCloseNavMenu}*!/*/}
-                    {/*    /!*        sx={{ my: 2, color: 'white', display: 'block' }}*!/*/}
-                    {/*    /!*    >*!/*/}
-                    {/*    /!*        {page}*!/*/}
-                    {/*    /!*    </Button>*!/*/}
-                    {/*    /!*))}*!/*/}
-                    {/*</Box>*/}
 
                     <Box sx={{ flexGrow: 0 }}>
 
                         {
                             props.isSignedIn &&
                             <MenuDropdownComponent
-                                handleSignOut={props.handleSignOut}
-                                handleTheme={props.handleTheme}
+                                handleSignOutClicked={props.handleSignOutClicked}
+                                handleThemeToggled={props.handleThemeToggled}
+                                profileImage={props.profileImage}
                             />
 
                         }
-
-                        {/*<Tooltip title="Open settings">*/}
-                        {/*    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>*/}
-                        {/*        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />*/}
-                        {/*    </IconButton>*/}
-                        {/*</Tooltip>*/}
-                        {/*<Menu*/}
-                        {/*    sx={{ mt: '45px' }}*/}
-                        {/*    id="menu-appbar"*/}
-                        {/*    anchorEl={anchorElUser}*/}
-                        {/*    anchorOrigin={{*/}
-                        {/*        vertical: 'top',*/}
-                        {/*        horizontal: 'right',*/}
-                        {/*    }}*/}
-                        {/*    keepMounted*/}
-                        {/*    transformOrigin={{*/}
-                        {/*        vertical: 'top',*/}
-                        {/*        horizontal: 'right',*/}
-                        {/*    }}*/}
-                        {/*    open={Boolean(anchorElUser)}*/}
-                        {/*    onClose={handleCloseUserMenu}*/}
-                        {/*>*/}
-                        {/*    {settings.map((setting) => (*/}
-                        {/*        <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
-                        {/*            <Typography textAlign="center">{setting}</Typography>*/}
-                        {/*        </MenuItem>*/}
-                        {/*    ))}*/}
-                        {/*</Menu>*/}
                     </Box>
                 </Toolbar>
             </Container>

@@ -21,7 +21,9 @@ import {AddWorkoutCategoryDialog} from "../components/AddWorkoutCategoryDialog";
 import {
     saveWorkoutRequest,
     fetchCategoriesRequest,
-    fetchExercisesRequest, handleAddExerciseRequest, handleAddCategoryRequest
+    fetchExerciseOptionsRequest,
+    handleAddExerciseOptionRequest,
+    handleAddCategoryRequest
 } from "../utils/requests";
 
 const dayjs = require('dayjs');
@@ -38,16 +40,6 @@ export interface Exercise {
     values: Array<Set>
     newExercise?: string
 }
-
-/**
- * TODO
- * 1. Figure out why so many rerenders are happening at the start (and is this a bad thing..? --DONE?
- * 2. Fix how the workout category component works.. aka get console warnings to go away --DONE
- * 3. Continue refactoring how requests are offloaded into a helper file --DONE
- * 4. Make it so that saving a workout takes in the workout name and category --DONE
- * 5. UI Tweaks
- */
-
 
 export const NewWorkoutPage = () => {
 
@@ -70,7 +62,7 @@ export const NewWorkoutPage = () => {
     useEffect(() => {
         fetchCategories()
             .then(async () => {
-                await fetchExercises()
+                await fetchExerciseOptions();
             })
             .catch((error) => {
                 console.log(error)
@@ -89,17 +81,18 @@ export const NewWorkoutPage = () => {
         setDropdownWorkoutCategories(categories);
     }
 
-    const fetchExercises = async () => {
-        const list = await fetchExercisesRequest(token);
+    const fetchExerciseOptions = async () => {
+        const list = await fetchExerciseOptionsRequest(token);
         setDropdownExerciseOptions(list);
     }
 
-    const handleAddExercise = async (data: Exercise) => {
-        const result = await handleAddExerciseRequest(data, exerciseList, token)
+    const handleAddExerciseOption = async (data: Exercise) => {
+        const result = await handleAddExerciseOptionRequest(data, exerciseList, token)
         const tempList = exerciseList;
         tempList.push(result);
         setExerciseList(tempList);
         setShowDialog(false);
+        await fetchExerciseOptions();
     }
 
     const handleExerciseInput = async (event: any, setIndex: number, exerciseIndex: number, field: number) => {
@@ -168,7 +161,7 @@ export const NewWorkoutPage = () => {
                 <AddExerciseDialog
                     isOpen={showDialog}
                     dropdownExerciseOptions={dropdownExerciseOptions}
-                    handleAddExercise={(data: any) => handleAddExercise(data)}
+                    handleAddExercise={(data: any) => handleAddExerciseOption(data)}
                     handleClose={() => setShowDialog(false)}/>
 
 

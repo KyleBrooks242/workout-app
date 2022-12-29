@@ -4,10 +4,11 @@ const primaryMainLight = '#7dbae5';
 
 const secondaryMainLight = '#759FBC';
 
-// const backgroundPaperLight = '#7F8B93';
-const backgroundPaperLight = '#bfc5c9';
+const backgroundPaperLight = '#CFD3D7';
+// const backgroundPaperLight = '#bfc5c9';
 
-const backgroundDefaultLight = '#FEFEFE';
+// const backgroundDefaultLight = '#FEFEFE';
+const backgroundDefaultLight = '#FFFFFF';
 
 // const textPrimaryLight = '#FEFEFE';
 // const textSecondaryLight = '#FEFEFE';
