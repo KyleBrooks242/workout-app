@@ -36,7 +36,7 @@ export const ProfilePage = (props: Props) => {
 
     const saveProfileImageToDB = async (image: any) => {
         await axios.post(
-            `/profile-photo`,
+            `/api/profile-photo`,
             {
                 data: image.toString()
             },

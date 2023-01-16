@@ -33,7 +33,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 /**
  * Authenticate a user given a username, password
  */
-app.post('/login', async (req, res, next) => {
+app.post('/api/login', async (req, res, next) => {
 
     try {
         const rawData = req.body.data;
@@ -73,7 +73,7 @@ app.post('/login', async (req, res, next) => {
 /**
  * Create a user given a username, password
  */
-app.post('/user',async (req, res, next) => {
+app.post('/api/user',async (req, res, next) => {
     try {
         const rawData = req.body.data;
 
@@ -121,7 +121,7 @@ app.post('/user',async (req, res, next) => {
 
 app.use(verifyToken);
 
-app.get('/profile-photo', async (req, res, next) => {
+app.get('/api/profile-photo', async (req, res, next) => {
     try {
         console.log(`GET /profile-photo hit...`);
         const result = await getProfilePhotoByUser(req.user);
@@ -133,7 +133,7 @@ app.get('/profile-photo', async (req, res, next) => {
     }
 })
 
-app.post('/profile-photo', async (req, res, next) => {
+app.post('/api/profile-photo', async (req, res, next) => {
 
     try {
         console.log(`POST /profile-photo hit...`);
@@ -152,7 +152,7 @@ app.post('/profile-photo', async (req, res, next) => {
 /**
  * Get a list of exercise options for a given user
  **/
-app.get('/exercise-option', async (req, res, next) => {
+app.get('/api/exercise-option', async (req, res, next) => {
     try {
         console.log(`GET /exercise-option hit...`);
         const result = await getExercisesByUser(req.user);
@@ -164,7 +164,7 @@ app.get('/exercise-option', async (req, res, next) => {
     }
 })
 
-app.post('/workout-category', async (req, res, next) => {
+app.post('/api/workout-category', async (req, res, next) => {
 
     try {
         console.log(`POST /workout-category hit...`);
@@ -180,7 +180,7 @@ app.post('/workout-category', async (req, res, next) => {
     }
 })
 
-app.get('/workout-category', async (req, res, next) => {
+app.get('/api/workout-category', async (req, res, next) => {
     try {
         console.log(`GET /workout-category hit...`);
         const result = await getWorkoutCategoriesByUser(req.user);
@@ -195,7 +195,7 @@ app.get('/workout-category', async (req, res, next) => {
 /**
  * Add an exercise
  **/
-app.post('/exercise-option', async (req, res, next) => {
+app.post('/api/exercise-option', async (req, res, next) => {
     try {
         console.log(`POST /exercise-option hit...`);
         const rawData = req.body.data;
@@ -213,7 +213,7 @@ app.post('/exercise-option', async (req, res, next) => {
     }
 })
 
-app.put('/workout', async(req, res, next) => {
+app.put('/api/workout', async(req, res, next) => {
     try {
         console.log(`PUT /workout hit...`);
 
@@ -231,7 +231,7 @@ app.put('/workout', async(req, res, next) => {
 
 })
 
-app.get('/workout', async(req, res, next) => {
+app.get('/api/workout', async(req, res, next) => {
     try {
         console.log(`GET /workout hit...`);
 

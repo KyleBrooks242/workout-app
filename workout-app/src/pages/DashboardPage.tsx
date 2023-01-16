@@ -23,7 +23,7 @@ export const DashboardPage = (props: Props) => {
 
     const fetchProfilePhoto = async () => {
         await axios.get(
-            `/profile-photo`,
+            `/api/profile-photo`,
             {
                 headers: { 'authorization': `Bearer ${token}`}
             }

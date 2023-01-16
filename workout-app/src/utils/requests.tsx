@@ -12,7 +12,7 @@ export const saveWorkoutRequest = async (exerciseList:Array<Exercise>, workoutNa
         category: category
     }
     await axios.put(
-        '/workout',
+        '/api/workout',
         {
             data: JSON.stringify(data)
         },
@@ -32,7 +32,7 @@ export const saveWorkoutRequest = async (exerciseList:Array<Exercise>, workoutNa
 export const fetchCategoriesRequest = async (token) => {
     let list: Array<string> = [];
     await axios.get(
-        `/workout-category`,
+        `/api/workout-category`,
         {
             headers: { 'authorization': `Bearer ${token}`}
         }
@@ -52,7 +52,7 @@ export const fetchCategoriesRequest = async (token) => {
 export const fetchExerciseOptionsRequest = async (token) => {
     let list: Array<string> = []
     await axios.get(
-        `/exercise-option`,
+        `/api/exercise-option`,
         {
             headers: { 'authorization': `Bearer ${token}`}
         }
@@ -73,7 +73,7 @@ export const handleAddExerciseOptionRequest = async (data: Exercise, exerciseLis
 
     if (data.name === '+ Add' && data.newExercise && data.newExercise !== '') {
         await axios.post(
-            '/exercise-option',
+            '/api/exercise-option',
             {
                 data: data
             },
@@ -124,7 +124,7 @@ export const handleAddCategoryRequest = async (category, token) => {
     console.log(`Adding category ${category}`);
 
     await axios.post(
-        '/workout-category',
+        '/api/workout-category',
         {
             data: category
         },

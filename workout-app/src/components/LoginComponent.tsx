@@ -114,7 +114,7 @@ export const LoginComponent = (props: Props) => {
 
         if (values.createAccount) {
             await axios.post(
-                '/user',
+                '/api/user',
                 {
                     data: data
                 }
@@ -132,7 +132,7 @@ export const LoginComponent = (props: Props) => {
         }
         else {
             await axios.post(
-                '/login',
+                '/api/login',
                 {
                     data: data
                 }
